@@ -1,0 +1,11 @@
+acme_meeting_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: AcmeMeetingBundle:Main:index }
+
+acme_meeting_main:
+     path:     /
+     defaults: { _controller: AcmeMeetingBundle:Main:default }
+
+registration:
+    pattern:  /registration
+    defaults: { _controller: AcmeMeetingBundle:Main:registration }

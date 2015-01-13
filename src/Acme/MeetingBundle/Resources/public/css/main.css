@@ -1,0 +1,14 @@
+.wrapper {
+    width: 1024px;
+    margin: 0 auto;
+}
+
+header h2 {
+    font-family: Verdana;
+}
+
+.content a {
+    color: #0088CC;
+    text-decoration: none;
+    font: 14px Verdana;
+}
