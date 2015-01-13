@@ -1,9 +1,9 @@
 {% extends '::base.html.twig' %}
-    {% block stylesheets %}
-        <link href="{{ asset('bundles/ACMEMeeting/css/main.css') }}" type="text/css" rel="stylesheet"/>
-    {% endblock %}
+{% block stylesheets %}
+    <link href="{{ asset('bundles/ACMEMeeting/css/main.css') }}" type="text/css" rel="stylesheet"/>
+{% endblock %}
 
-        {% block content %}
-            <a class="" href="{{ path('registration') }}">Register</a>
-            hello {{ name }}
-        {% endblock %}
+{% block content %}
+    <a class="" href="{{ path('registration') }}">Register</a>
+    hello {{ name }}
+{% endblock %}

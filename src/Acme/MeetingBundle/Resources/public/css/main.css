@@ -12,3 +12,29 @@ header h2 {
     text-decoration: none;
     font: 14px Verdana;
 }
+
+#form{
+    width: 55%;
+}
+
+#form div{
+    text-align:justify;
+    width: 100%;
+    margin: 10px 0;
+}
+
+#form input{
+    display: inline-block;
+    width: 40%;
+}
+
+#form label {
+    display: inline-block;
+    width: 40%;
+    font: 14px Verdana;
+}
+
+#form #form_BirthDate{
+    width: 40%;
+    display: inline-block;
+}

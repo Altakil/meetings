@@ -5,9 +5,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="user")
+ * @ORM\Table(name="userWomen")
  */
-class User
+class userWomen
 {
     /**
      * @ORM\Id
@@ -62,14 +62,25 @@ class User
     protected $MaritalStatus;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=2)
      */
-    protected $BodyType;
+    protected $breast;
+
+    /**
+     * @ORM\Column(type="string", length=3)
+     */
+    protected $waist;
+
+    /**
+     * @ORM\Column(type="string", length=3)
+     */
+    protected $Hips;
 
     /**
      * @ORM\Column(type="string", length=200)
      */
     protected $image;
+
 
     /**
      * Get id
@@ -85,7 +96,7 @@ class User
      * Set gender
      *
      * @param string $gender
-     * @return User
+     * @return userWomen
      */
     public function setGender($gender)
     {
@@ -108,7 +119,7 @@ class User
      * Set email
      *
      * @param string $email
-     * @return User
+     * @return userWomen
      */
     public function setEmail($email)
     {
@@ -131,7 +142,7 @@ class User
      * Set password
      *
      * @param string $password
-     * @return User
+     * @return userWomen
      */
     public function setPassword($password)
     {
@@ -154,7 +165,7 @@ class User
      * Set FirstName
      *
      * @param string $firstName
-     * @return User
+     * @return userWomen
      */
     public function setFirstName($firstName)
     {
@@ -177,7 +188,7 @@ class User
      * Set LastName
      *
      * @param string $lastName
-     * @return User
+     * @return userWomen
      */
     public function setLastName($lastName)
     {
@@ -200,7 +211,7 @@ class User
      * Set country
      *
      * @param string $country
-     * @return User
+     * @return userWomen
      */
     public function setCountry($country)
     {
@@ -223,7 +234,7 @@ class User
      * Set city
      *
      * @param string $city
-     * @return User
+     * @return userWomen
      */
     public function setCity($city)
     {
@@ -246,7 +257,7 @@ class User
      * Set BirthDate
      *
      * @param \DateTime $birthDate
-     * @return User
+     * @return userWomen
      */
     public function setBirthDate($birthDate)
     {
@@ -269,7 +280,7 @@ class User
      * Set MaritalStatus
      *
      * @param string $maritalStatus
-     * @return User
+     * @return userWomen
      */
     public function setMaritalStatus($maritalStatus)
     {
@@ -289,25 +300,94 @@ class User
     }
 
     /**
-     * Set BodyType
+     * Set breast
      *
-     * @param string $bodyType
-     * @return User
+     * @param string $breast
+     * @return userWomen
      */
-    public function setBodyType($bodyType)
+    public function setBreast($breast)
     {
-        $this->BodyType = $bodyType;
+        $this->breast = $breast;
 
         return $this;
     }
 
     /**
-     * Get BodyType
+     * Get breast
      *
      * @return string 
      */
-    public function getBodyType()
+    public function getBreast()
     {
-        return $this->BodyType;
+        return $this->breast;
+    }
+
+    /**
+     * Set waist
+     *
+     * @param string $waist
+     * @return userWomen
+     */
+    public function setWaist($waist)
+    {
+        $this->waist = $waist;
+
+        return $this;
+    }
+
+    /**
+     * Get waist
+     *
+     * @return string 
+     */
+    public function getWaist()
+    {
+        return $this->waist;
+    }
+
+    /**
+     * Set Hips
+     *
+     * @param string $hips
+     * @return userWomen
+     */
+    public function setHips($hips)
+    {
+        $this->Hips = $hips;
+
+        return $this;
+    }
+
+    /**
+     * Get Hips
+     *
+     * @return string 
+     */
+    public function getHips()
+    {
+        return $this->Hips;
+    }
+
+    /**
+     * Set image
+     *
+     * @param string $image
+     * @return userWomen
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return string 
+     */
+    public function getImage()
+    {
+        return $this->image;
     }
 }

@@ -1,4 +1,15 @@
 {% extends '::base.html.twig' %}
-        {% block header %}
-            <h2>Registration</h2>
-        {% endblock %}
+{% block header %}
+    <h2>Registration</h2>
+{% endblock %}
+
+
+{% block content %}
+    {{ parent() }}
+
+    <form action="{{ path('registration') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+
+        <input type="submit" />
+    </form>
+{% endblock %}
