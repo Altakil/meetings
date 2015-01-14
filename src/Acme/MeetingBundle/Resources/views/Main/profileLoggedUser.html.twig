@@ -1,0 +1,29 @@
+{% extends '::base.html.twig' %}
+{% block stylesheets %}
+    <link href="{{ asset('bundles/ACMEMeeting/css/main.css') }}" type="text/css" rel="stylesheet"/>
+    <link href="{{ asset('bundles/ACMEMeeting/css/css-profile.css') }}" type="text/css" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+    <div class="wrapper-authorization">
+        <h2>My profile</h2>
+    </div>
+
+    <a href="{{ path('showUsers') }}">Back</a>
+
+    <div class="wrapper-info">
+        <img src="">
+        <div class="user-info">
+            <p>FirstName     <span>{{ FirstName }}</span></p>
+            <p>LastName      <span>{{ LastName }}</span></p>
+            <p>gender        <span>{{ gender }}</span></p>
+            <p>email         <span>{{ email }}</span></p>
+            <p>password      <span>{{ password }}</span></p>
+            <p>country       <span>{{ country }}</span></p>
+            <p>city          <span>{{ city }}</span></p>
+            <p>BirthDate     <span>{{ BirthDate|date('d-m-F') }}</span></p>
+            <p>MaritalStatus <span>{{ MaritalStatus }}</span></p>
+        </div>
+    </div>
+
+{% endblock %}

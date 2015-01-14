@@ -21,12 +21,12 @@
     <form id="manForm" action="{{ path('registration') }}" method="post" {{ form_enctype(formMan) }}>
         {{ form_widget(formMan) }}
 
-        <input type="submit" />
+        <input class="reg" type="submit" />
     </form>
 
     <form id="womanForm" action="{{ path('registration') }}" method="post" {{ form_enctype(formWomen) }}>
         {{ form_widget(formWomen) }}
 
-        <input type="submit" />
+        <input class="reg" type="submit" />
     </form>
 {% endblock %}
