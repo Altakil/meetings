@@ -1,0 +1,9 @@
+{% extends '::base.html.twig' %}
+{% block stylesheets %}
+    <link href="{{ asset('bundles/ACMEMeeting/css/main.css') }}" type="text/css" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+    <p>You successful registration</p>
+    <a href="{{ path('acme_meeting_main') }}">main</a>
+{% endblock %}

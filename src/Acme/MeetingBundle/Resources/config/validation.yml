@@ -1,0 +1,16 @@
+Acme\MeetingBundle\Entity\UserMan:
+    properties:
+        FirstName:
+            - NotBlank: ~
+        BirthDate:
+            - NotBlank: ~
+            - Type: \DateTime
+
+
+Acme\MeetingBundle\Entity\UserWoman:
+    properties:
+        FirstName:
+            - NotBlank: ~
+        BirthDate:
+            - NotBlank: ~
+            - Type: \DateTime

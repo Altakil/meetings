@@ -5,9 +5,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="user")
+ * @ORM\Table(name="userMan")
  */
-class User
+class UserMan
 {
     /**
      * @ORM\Id
@@ -71,10 +71,12 @@ class User
      */
     protected $image;
 
+    public $file;
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -97,7 +99,7 @@ class User
     /**
      * Get gender
      *
-     * @return string 
+     * @return string
      */
     public function getGender()
     {
@@ -120,7 +122,7 @@ class User
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -143,7 +145,7 @@ class User
     /**
      * Get password
      *
-     * @return string 
+     * @return string
      */
     public function getPassword()
     {
@@ -166,7 +168,7 @@ class User
     /**
      * Get FirstName
      *
-     * @return string 
+     * @return string
      */
     public function getFirstName()
     {
@@ -189,7 +191,7 @@ class User
     /**
      * Get LastName
      *
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
@@ -212,7 +214,7 @@ class User
     /**
      * Get country
      *
-     * @return string 
+     * @return string
      */
     public function getCountry()
     {
@@ -235,7 +237,7 @@ class User
     /**
      * Get city
      *
-     * @return string 
+     * @return string
      */
     public function getCity()
     {
@@ -258,7 +260,7 @@ class User
     /**
      * Get BirthDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getBirthDate()
     {
@@ -281,7 +283,7 @@ class User
     /**
      * Get MaritalStatus
      *
-     * @return string 
+     * @return string
      */
     public function getMaritalStatus()
     {
@@ -304,10 +306,66 @@ class User
     /**
      * Get BodyType
      *
-     * @return string 
+     * @return string
      */
     public function getBodyType()
     {
         return $this->BodyType;
+    }
+
+    /**
+     * Set image
+     *
+     * @param string $image
+     * @return User
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    public function getAbsolutePath()
+    {
+        return null === $this->image ? null : $this->getUploadRootDir().'/'.$this->image;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->image ? null : $this->getUploadDir().'/'.$this->image;
+    }
+
+    protected function getUploadRootDir()
+    {
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        return 'uploads/documents';
+    }
+
+    public function upload()
+    {
+        if (null === $this->file) {
+            return;
+        }
+
+        $this->file->move($this->getUploadRootDir(), $this->file->getClientOriginalName());
+
+        $this->setImage($this->file->getClientOriginalName());
+
+        $this->file = null;
     }
 }

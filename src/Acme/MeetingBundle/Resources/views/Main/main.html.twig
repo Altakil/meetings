@@ -1,9 +1,16 @@
 {% extends '::base.html.twig' %}
-    {% block stylesheets %}
-        <link href="{{ asset('bundles/ACMEMeeting/css/main.css') }}" type="text/css" rel="stylesheet"/>
-    {% endblock %}
+{% block stylesheets %}
+    <link href="{{ asset('bundles/ACMEMeeting/css/main.css') }}" type="text/css" rel="stylesheet"/>
+{% endblock %}
 
-        {% block content %}
-            <a class="" href="{{ path('registration') }}">Register</a>
-            hello {{ name }}
-        {% endblock %}
+{% block content %}
+    <div class="wrapper-authorization">
+        <form id="womanForm" action="{{ path('registration') }}" method="post" {{ form_enctype(form) }}>
+            {{ form_widget(form) }}
+
+            <input type="submit" id="submitAuthorization" />
+        </form>
+    </div>
+
+    <a class="registration-link" href="{{ path('registration') }}">Register</a>
+{% endblock %}

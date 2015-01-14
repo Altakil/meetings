@@ -5,9 +5,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="user")
+ * @ORM\Table(name="userWomen")
  */
-class User
+class UserWomen
 {
     /**
      * @ORM\Id
@@ -62,14 +62,31 @@ class User
     protected $MaritalStatus;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=2)
      */
-    protected $BodyType;
+    protected $breast;
+
+    /**
+     * @ORM\Column(type="string", length=3)
+     */
+    protected $waist;
+
+    /**
+     * @ORM\Column(type="string", length=3)
+     */
+    protected $Hips;
+
+    /**
+     * @ORM\Column(type="string", length=200)
+     */
+    protected $image;
+
+    public $file;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -80,7 +97,7 @@ class User
      * Set gender
      *
      * @param string $gender
-     * @return User
+     * @return userWomen
      */
     public function setGender($gender)
     {
@@ -92,7 +109,7 @@ class User
     /**
      * Get gender
      *
-     * @return string 
+     * @return string
      */
     public function getGender()
     {
@@ -103,7 +120,7 @@ class User
      * Set email
      *
      * @param string $email
-     * @return User
+     * @return userWomen
      */
     public function setEmail($email)
     {
@@ -115,7 +132,7 @@ class User
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -126,7 +143,7 @@ class User
      * Set password
      *
      * @param string $password
-     * @return User
+     * @return userWomen
      */
     public function setPassword($password)
     {
@@ -138,7 +155,7 @@ class User
     /**
      * Get password
      *
-     * @return string 
+     * @return string
      */
     public function getPassword()
     {
@@ -149,7 +166,7 @@ class User
      * Set FirstName
      *
      * @param string $firstName
-     * @return User
+     * @return userWomen
      */
     public function setFirstName($firstName)
     {
@@ -161,7 +178,7 @@ class User
     /**
      * Get FirstName
      *
-     * @return string 
+     * @return string
      */
     public function getFirstName()
     {
@@ -172,7 +189,7 @@ class User
      * Set LastName
      *
      * @param string $lastName
-     * @return User
+     * @return userWomen
      */
     public function setLastName($lastName)
     {
@@ -184,7 +201,7 @@ class User
     /**
      * Get LastName
      *
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
@@ -195,7 +212,7 @@ class User
      * Set country
      *
      * @param string $country
-     * @return User
+     * @return userWomen
      */
     public function setCountry($country)
     {
@@ -207,7 +224,7 @@ class User
     /**
      * Get country
      *
-     * @return string 
+     * @return string
      */
     public function getCountry()
     {
@@ -218,7 +235,7 @@ class User
      * Set city
      *
      * @param string $city
-     * @return User
+     * @return userWomen
      */
     public function setCity($city)
     {
@@ -230,7 +247,7 @@ class User
     /**
      * Get city
      *
-     * @return string 
+     * @return string
      */
     public function getCity()
     {
@@ -241,7 +258,7 @@ class User
      * Set BirthDate
      *
      * @param \DateTime $birthDate
-     * @return User
+     * @return userWomen
      */
     public function setBirthDate($birthDate)
     {
@@ -253,7 +270,7 @@ class User
     /**
      * Get BirthDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getBirthDate()
     {
@@ -264,7 +281,7 @@ class User
      * Set MaritalStatus
      *
      * @param string $maritalStatus
-     * @return User
+     * @return userWomen
      */
     public function setMaritalStatus($maritalStatus)
     {
@@ -276,7 +293,7 @@ class User
     /**
      * Get MaritalStatus
      *
-     * @return string 
+     * @return string
      */
     public function getMaritalStatus()
     {
@@ -284,25 +301,127 @@ class User
     }
 
     /**
-     * Set BodyType
+     * Set breast
      *
-     * @param string $bodyType
-     * @return User
+     * @param string $breast
+     * @return userWomen
      */
-    public function setBodyType($bodyType)
+    public function setBreast($breast)
     {
-        $this->BodyType = $bodyType;
+        $this->breast = $breast;
 
         return $this;
     }
 
     /**
-     * Get BodyType
+     * Get breast
      *
-     * @return string 
+     * @return string
      */
-    public function getBodyType()
+    public function getBreast()
     {
-        return $this->BodyType;
+        return $this->breast;
+    }
+
+    /**
+     * Set waist
+     *
+     * @param string $waist
+     * @return userWomen
+     */
+    public function setWaist($waist)
+    {
+        $this->waist = $waist;
+
+        return $this;
+    }
+
+    /**
+     * Get waist
+     *
+     * @return string
+     */
+    public function getWaist()
+    {
+        return $this->waist;
+    }
+
+    /**
+     * Set Hips
+     *
+     * @param string $hips
+     * @return userWomen
+     */
+    public function setHips($hips)
+    {
+        $this->Hips = $hips;
+
+        return $this;
+    }
+
+    /**
+     * Get Hips
+     *
+     * @return string
+     */
+    public function getHips()
+    {
+        return $this->Hips;
+    }
+
+    /**
+     * Set image
+     *
+     * @param string $image
+     * @return userWomen
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    public function getAbsolutePath()
+    {
+        return null === $this->image ? null : $this->getUploadRootDir() . '/' . $this->image;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->image ? null : $this->getUploadDir() . '/' . $this->image;
+    }
+
+    protected function getUploadRootDir()
+    {
+        return __DIR__ . '/../../../../web/' . $this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        return 'uploads/documents';
+    }
+
+    public function upload()
+    {
+        if (null === $this->file) {
+            return;
+        }
+
+        $this->file->move($this->getUploadRootDir(), $this->file->getClientOriginalName());
+
+        $this->setImage($this->file->getClientOriginalName());
+
+        $this->file = null;
     }
 }
