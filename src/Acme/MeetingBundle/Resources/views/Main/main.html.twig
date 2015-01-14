@@ -5,7 +5,7 @@
 
 {% block content %}
     <div class="wrapper-authorization">
-        <form id="womanForm" action="{{ path('registration') }}" method="post" {{ form_enctype(form) }}>
+        <form id="womanForm" action="{{ path('main') }}" method="post" {{ form_enctype(form) }}>
             {{ form_widget(form) }}
 
             <input type="submit" id="submitAuthorization" />

@@ -2,10 +2,25 @@ acme_meeting_homepage:
     path:     /hello/{name}
     defaults: { _controller: AcmeMeetingBundle:Main:index }
 
-acme_meeting_main:
+main:
      path:     /
      defaults: { _controller: AcmeMeetingBundle:Main:main }
 
 registration:
     pattern:  /registration
     defaults: { _controller: AcmeMeetingBundle:Main:registration }
+
+
+login_out:
+    pattern: /logout
+    defaults: {_controller: AcmeMeetingBundle:Main:exitUser }
+
+
+showUsers:
+    pattern: /ShowOtherUsers
+    defaults: {_controller: AcmeMeetingBundle:Main:showAllUsers }
+
+
+showProfile:
+    pattern: /profile
+    defaults: {_controller: AcmeMeetingBundle:Main:showProfile }

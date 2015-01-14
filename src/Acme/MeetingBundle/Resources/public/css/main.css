@@ -66,3 +66,7 @@ input[name=gender] {
     top: -14px;
     left: -42px;
 }
+
+.reg{
+    display: block;
+}
