@@ -71,6 +71,8 @@ class UserMan
      */
     protected $image;
 
+    public $file;
+
     /**
      * Get id
      *
@@ -332,5 +334,38 @@ class UserMan
     public function getImage()
     {
         return $this->image;
+    }
+
+    public function getAbsolutePath()
+    {
+        return null === $this->image ? null : $this->getUploadRootDir().'/'.$this->image;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->image ? null : $this->getUploadDir().'/'.$this->image;
+    }
+
+    protected function getUploadRootDir()
+    {
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        return 'uploads/documents';
+    }
+
+    public function upload()
+    {
+        if (null === $this->file) {
+            return;
+        }
+
+        $this->file->move($this->getUploadRootDir(), $this->file->getClientOriginalName());
+
+        $this->setImage($this->file->getClientOriginalName());
+
+        $this->file = null;
     }
 }

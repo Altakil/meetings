@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="userWomen")
  */
-class userWomen
+class UserWomen
 {
     /**
      * @ORM\Id
@@ -81,11 +81,12 @@ class userWomen
      */
     protected $image;
 
+    public $file;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -108,7 +109,7 @@ class userWomen
     /**
      * Get gender
      *
-     * @return string 
+     * @return string
      */
     public function getGender()
     {
@@ -131,7 +132,7 @@ class userWomen
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -154,7 +155,7 @@ class userWomen
     /**
      * Get password
      *
-     * @return string 
+     * @return string
      */
     public function getPassword()
     {
@@ -177,7 +178,7 @@ class userWomen
     /**
      * Get FirstName
      *
-     * @return string 
+     * @return string
      */
     public function getFirstName()
     {
@@ -200,7 +201,7 @@ class userWomen
     /**
      * Get LastName
      *
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
@@ -223,7 +224,7 @@ class userWomen
     /**
      * Get country
      *
-     * @return string 
+     * @return string
      */
     public function getCountry()
     {
@@ -246,7 +247,7 @@ class userWomen
     /**
      * Get city
      *
-     * @return string 
+     * @return string
      */
     public function getCity()
     {
@@ -269,7 +270,7 @@ class userWomen
     /**
      * Get BirthDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getBirthDate()
     {
@@ -292,7 +293,7 @@ class userWomen
     /**
      * Get MaritalStatus
      *
-     * @return string 
+     * @return string
      */
     public function getMaritalStatus()
     {
@@ -315,7 +316,7 @@ class userWomen
     /**
      * Get breast
      *
-     * @return string 
+     * @return string
      */
     public function getBreast()
     {
@@ -338,7 +339,7 @@ class userWomen
     /**
      * Get waist
      *
-     * @return string 
+     * @return string
      */
     public function getWaist()
     {
@@ -361,7 +362,7 @@ class userWomen
     /**
      * Get Hips
      *
-     * @return string 
+     * @return string
      */
     public function getHips()
     {
@@ -384,10 +385,43 @@ class userWomen
     /**
      * Get image
      *
-     * @return string 
+     * @return string
      */
     public function getImage()
     {
         return $this->image;
+    }
+
+    public function getAbsolutePath()
+    {
+        return null === $this->image ? null : $this->getUploadRootDir() . '/' . $this->image;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->image ? null : $this->getUploadDir() . '/' . $this->image;
+    }
+
+    protected function getUploadRootDir()
+    {
+        return __DIR__ . '/../../../../web/' . $this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        return 'uploads/documents';
+    }
+
+    public function upload()
+    {
+        if (null === $this->file) {
+            return;
+        }
+
+        $this->file->move($this->getUploadRootDir(), $this->file->getClientOriginalName());
+
+        $this->setImage($this->file->getClientOriginalName());
+
+        $this->file = null;
     }
 }

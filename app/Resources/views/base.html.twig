@@ -6,6 +6,8 @@
     {% block stylesheets %}
         <link href="{{ asset('bundles/ACMEMeeting/css/main.css') }}" type="text/css" rel="stylesheet"/>
     {% endblock %}
+    {% block javascripts %}
+    {% endblock %}
 </head>
 <body>
 <div class="wrapper">
@@ -17,7 +19,6 @@
     <div class="content">
         {% block content %}
             <a class="" href="{{ path('registration') }}">Register</a>
-            hello {{ name }}
         {% endblock %}
     </div>
 </div>

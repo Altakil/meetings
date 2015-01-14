@@ -4,7 +4,7 @@ acme_meeting_homepage:
 
 acme_meeting_main:
      path:     /
-     defaults: { _controller: AcmeMeetingBundle:Main:default }
+     defaults: { _controller: AcmeMeetingBundle:Main:main }
 
 registration:
     pattern:  /registration
