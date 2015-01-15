@@ -24,3 +24,7 @@ showUsers:
 showProfile:
     pattern: /profile
     defaults: {_controller: AcmeMeetingBundle:Main:showProfile }
+
+editProfile:
+    pattern: /editProfile
+    defaults: {_controller: AcmeMeetingBundle:Main:editProfile }

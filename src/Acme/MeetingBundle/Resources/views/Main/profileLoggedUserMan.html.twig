@@ -12,7 +12,7 @@
     <a href="{{ path('showUsers') }}">Back</a>
 
     <div class="wrapper-info">
-        <img src="">
+        <img class="photo" width="200" height="200" src="{{ asset('uploads/documents/') }}{{ image }}">
         <div class="user-info">
             <p>FirstName     <span>{{ FirstName }}</span></p>
             <p>LastName      <span>{{ LastName }}</span></p>
@@ -23,6 +23,8 @@
             <p>city          <span>{{ city }}</span></p>
             <p>BirthDate     <span>{{ BirthDate|date('d-m-F') }}</span></p>
             <p>MaritalStatus <span>{{ MaritalStatus }}</span></p>
+
+            <a href="{{ path('editProfile') }}">Edit</a>
         </div>
     </div>
 
