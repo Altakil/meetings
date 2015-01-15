@@ -28,3 +28,4 @@ showProfile:
 editProfile:
     pattern: /editProfile
     defaults: {_controller: AcmeMeetingBundle:Main:editProfile }
+

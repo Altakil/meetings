@@ -2,6 +2,12 @@ acme_meeting:
     resource: "@AcmeMeetingBundle/Resources/config/routing.yml"
     prefix:   /
 
+
+man:
+    resource: "@AcmeMeetingBundle/Resources/config/routing/userman.yml"
+    prefix:   /admin/man
+
 app:
     resource: @AppBundle/Controller/
     type:     annotation
+

@@ -1,0 +1,52 @@
+table{
+    text-align: center;
+    font: 12px Verdana;
+    width: 100%;
+}
+
+.wrapper{
+    width: auto;
+    max-width: 1200px;
+}
+
+ul{
+    list-style: none;
+    margin:0;
+}
+
+table a{
+    margin: 0;
+}
+
+table td{
+    padding:8px 5px;
+}
+
+
+#acme_meetingbundle_userman {
+    width: 55%;
+    display: inline-block;
+}
+
+#acme_meetingbundle_userman div {
+    text-align: justify;
+    width: 100%;
+    margin: 10px 0;
+}
+
+#acme_meetingbundle_userman input {
+    display: inline-block;
+    width: 40%;
+}
+
+#acme_meetingbundle_userman label {
+    display: inline-block;
+    width: 40%;
+    font: 14px Verdana;
+}
+
+
+#viewProperties{
+    text-align: left;
+    width: 700px;
+}

@@ -1,0 +1,56 @@
+{% extends '::base.html.twig' %}
+{% block stylesheets %}
+    <link href="{{ asset('bundles/ACMEMeeting/css/main.css') }}" type="text/css" rel="stylesheet"/>
+    <link href="{{ asset('bundles/ACMEMeeting/css/admin.css') }}" type="text/css" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+    <h1>Man list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                {#<th>Id</th>#}
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Country</th>
+                <th>City</th>
+                <th>Birthdate</th>
+                <th>Maritalstatus</th>
+                <th>Bodytype</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.gender }}</td>
+                <td>{{ entity.email }}</td>
+                <td>{{ entity.password }}</td>
+                <td>{{ entity.FirstName }}</td>
+                <td>{{ entity.LastName }}</td>
+                <td>{{ entity.country }}</td>
+                <td>{{ entity.city }}</td>
+                <td>{% if entity.BirthDate %}{{ entity.BirthDate|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ entity.MaritalStatus }}</td>
+                <td>{{ entity.BodyType }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('userman_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('userman_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+    {% endblock %}
