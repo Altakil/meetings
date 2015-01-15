@@ -86,7 +86,7 @@ class MainController extends Controller
         $req = $request->request->all();
 
         $formMan = $this->createFormBuilder($userMan)
-            ->add('gender', 'text')
+            ->add('gender', 'hidden')
             ->add('email', 'text')
             ->add('password', 'text')
             ->add('FirstName', 'text')
@@ -101,7 +101,7 @@ class MainController extends Controller
             ->getForm();
 
         $formWomen = $this->createFormBuilder($userWomen)
-            ->add('gender', 'text')
+            ->add('gender', 'hidden')
             ->add('email', 'text')
             ->add('password', 'text')
             ->add('FirstName', 'text')
@@ -126,7 +126,7 @@ class MainController extends Controller
                     $em->persist($formWomen->getData());
                     $em->flush();
 
-                    return $this->render('AcmeMeetingBundle:Main:userCreated.hml.twig');
+                    return $this->render('AcmeMeetingBundle:Main:userSuccessCRUD.html.twig', array('action' => "registered",));
                 }
             } else if ($req['form']['gender'] == "man") {
                 $formMan->handleRequest($request);
@@ -136,7 +136,7 @@ class MainController extends Controller
                     $em->persist($formMan->getData());
                     $em->flush();
 
-                    return $this->render('AcmeMeetingBundle:Main:userCreated.hml.twig');
+                    return $this->render('AcmeMeetingBundle:Main:userSuccessCRUD.html.twig', array('action' => "registered",));
                 }
             }
         } else {
@@ -167,7 +167,7 @@ class MainController extends Controller
         $UserWomen = $repositoryWomen->findOneBy(array('email' => $this->get('session')->get('email')));
 
         if ($UserMan) {
-            return $this->render('AcmeMeetingBundle:Main:profileLoggedUser.html.twig', array(
+            return $this->render('AcmeMeetingBundle:Main:profileLoggedUserMan.html.twig', array(
                 'gender' => $UserMan->getGender(),
                 'email' => $UserMan->getEmail(),
                 'password' => $UserMan->getPassword(),
@@ -177,14 +177,110 @@ class MainController extends Controller
                 'city' => $UserMan->getCity(),
                 'BirthDate' => $UserMan->getBirthDate(),
                 'MaritalStatus' => $UserMan->getMaritalStatus(),
+                'image' => $UserMan->getImage(),
             ));
         } else if ($UserWomen) {
-
+            return $this->render('AcmeMeetingBundle:Main:profileLoggedUserWomen.html.twig', array(
+                'gender' => $UserWomen->getGender(),
+                'email' => $UserWomen->getEmail(),
+                'password' => $UserWomen->getPassword(),
+                'FirstName' => $UserWomen->getFirstName(),
+                'LastName' => $UserWomen->getLastName(),
+                'country' => $UserWomen->getCountry(),
+                'city' => $UserWomen->getCity(),
+                'BirthDate' => $UserWomen->getBirthDate(),
+                'MaritalStatus' => $UserWomen->getMaritalStatus(),
+                'hips' => $UserWomen->getHips(),
+                'waist' => $UserWomen->getWaist(),
+                'breast' => $UserWomen->getBreast(),
+                'image' => $UserWomen->getImage(),
+            ));
         }
 
         return $this->render('AcmeMeetingBundle:Main:profileLoggedUser.html.twig', array(
             'name' => $this->get('session')->get('name'),
         ));
+    }
+
+    public function editProfileAction(Request $request)
+    {
+        $repositoryMan = $this->getDoctrine()
+            ->getRepository('AcmeMeetingBundle:UserMan');
+        $repositoryWomen = $this->getDoctrine()
+            ->getRepository('AcmeMeetingBundle:UserWomen');
+
+        $UserMan = $repositoryMan->findOneBy(array('email' => $this->get('session')->get('email')));
+        $UserWomen = $repositoryWomen->findOneBy(array('email' => $this->get('session')->get('email')));
+
+        $formMan = $this->createFormBuilder($UserMan)
+            ->add('gender', 'hidden')
+            ->add('email', 'text')
+            ->add('password', 'text')
+            ->add('FirstName', 'text')
+            ->add('LastName', 'text')
+            ->add('country', 'text')
+            ->add('city', 'text')
+            ->add('BirthDate', 'date')
+            ->add('MaritalStatus', 'text')
+            ->add('BodyType', 'text')
+            ->getForm();
+
+        $formWomen = $this->createFormBuilder($UserWomen)
+            ->add('gender', 'hidden')
+            ->add('email', 'text')
+            ->add('password', 'text')
+            ->add('FirstName', 'text')
+            ->add('LastName', 'text')
+            ->add('country', 'text')
+            ->add('city', 'text')
+            ->add('BirthDate', 'date')
+            ->add('MaritalStatus', 'text')
+            ->add('breast', 'text')
+            ->add('waist', 'text')
+            ->add('Hips', 'text')
+            ->getForm();
+
+        $request_value = $request->request->all();
+
+        if ($request->getMethod() == 'POST') {
+            if ($UserMan) {
+                $formMan->handleRequest($request);
+                if ($formMan->isValid()) {
+                    $em = $this->getDoctrine()->getEntityManager();
+                    $em->persist($formMan->getData());
+                    $em->flush();
+
+                    $this->get('session')->set('name', $request_value['form']['FirstName']);
+                    $this->get('session')->set('email', $request_value['form']['email']);
+                    $this->get('session')->set('password', $request_value['form']['password']);
+
+                    return $this->render('AcmeMeetingBundle:Main:userSuccessCRUD.html.twig', array('action' => "updated",));
+                }
+            } else if ($UserWomen) {
+                $formWomen->handleRequest($request);
+                if ($formWomen->isValid()) {
+                    $em = $this->getDoctrine()->getEntityManager();
+                    $em->persist($formWomen->getData());
+                    $em->flush();
+
+                    $this->get('session')->set('name', $request_value['form']['FirstName']);
+                    $this->get('session')->set('email', $request_value['form']['email']);
+                    $this->get('session')->set('password', $request_value['form']['password']);
+
+                    return $this->render('AcmeMeetingBundle:Main:userSuccessCRUD.html.twig', array('action' => "updated",));
+                }
+            }
+        } else {
+            if ($UserMan) {
+                return $this->render('AcmeMeetingBundle:Main:editProfileMan.html.twig', array(
+                    'form' => $formMan->createView(),
+                ));
+            } else if ($UserWomen) {
+                return $this->render('AcmeMeetingBundle:Main:editProfileMan.html.twig', array(
+                    'form' => $formWomen->createView(),
+                ));
+            }
+        }
     }
 
 }

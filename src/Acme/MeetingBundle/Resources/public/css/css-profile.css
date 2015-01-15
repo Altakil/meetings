@@ -1,4 +1,24 @@
+.wrapper-info{
+    margin-top: 40px;
+    overflow: hidden;
+}
+
+.wrapper-info img{
+    margin-top: 15px;
+}
+
 .user-info{
     float: right;
     width: 320px;
+}
+
+.user-info p{
+    overflow: hidden;
+}
+
+.user-info span{
+    font-weight: 700;
+    color: #565656;
+    margin-right: 20px;
+    float: right;
 }
