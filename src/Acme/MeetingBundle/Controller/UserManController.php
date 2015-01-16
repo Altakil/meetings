@@ -47,26 +47,42 @@ class UserManController extends Controller
             $request_value = $request->request->all();
 
             if($request->getMethod() == 'POST'){
-                $index = $request_value['form']['Country'] + 1;
-                $countryChoice = $this->getDoctrine()->getManager()->getRepository('AcmeMeetingBundle:country')->find($index);
-                $listCities = $countryChoice->getTowns();
-                $arrayCities = array();
-                foreach($listCities as $value){
-                    $arrayCities[] = $value->getName();
+
+                if(isset($request_value['form']['Country'])){
+                    $index = $request_value['form']['Country'] + 1;
+                    $countryChoice = $this->getDoctrine()->getManager()->getRepository('AcmeMeetingBundle:country')->find($index);
+                    $listCities = $countryChoice->getTowns();
+
+                    $arrayCities = array();
+                    foreach($listCities as $value){
+                        $arrayCities[$value->getName()] = $value->getName();
+                    }
+
+                    $formBuilder = $this->createFormBuilder($arrayCities)->add('Cities', 'choice', array(
+                        'choices' =>  $arrayCities,
+                        'required'  => false,
+                    ));
+
+                    $form = $formBuilder->getForm();
+
+                    return $this->render('AcmeMeetingBundle:UserMan:index.html.twig', array(
+                        'entities' => $entities,
+                        'form' => $form->createView(),
+                    ));
                 }
+                else if(isset($request_value['form']['Cities'])){
 
-                $formBuilder = $this->createFormBuilder($arrayCities)->add('Cities', 'choice', array(
-                    'choices' =>  $arrayCities,
-                    'required'  => false,
-                ));
+                    $parameter = substr($request_value['form']['Cities'], 0);
+                    $em = $this->getDoctrine()->getEntityManager();
+                    $query = $query = $em->createQuery('SELECT p FROM AcmeMeetingBundle:UserMan p WHERE p.city = :city ORDER BY p.city'
+                    )->setParameter('city', $parameter);
 
-
-                $form = $formBuilder->getForm();
-
-                return $this->render('AcmeMeetingBundle:UserMan:index.html.twig', array(
-                    'entities' => $entities,
-                    'form' => $form->createView(),
-                ));
+                    $entities = $query->getResult();
+                    return $this->render('AcmeMeetingBundle:UserMan:index.html.twig', array(
+                        'entities' => $entities,
+                        'form' => $form->createView(),
+                    ));
+                }
             }
             else{
 
