@@ -1,3 +1,7 @@
+acme_meeting_userwomen:
+    resource: "@AcmeMeetingBundle/Resources/config/routing/userwomen.yml"
+    prefix:   /userwomen
+
 acme_meeting_homepage:
     path:     /hello/{name}
     defaults: { _controller: AcmeMeetingBundle:Main:index }
@@ -29,3 +33,6 @@ editProfile:
     pattern: /editProfile
     defaults: {_controller: AcmeMeetingBundle:Main:editProfile }
 
+loadImage:
+    pattern: /loadImage
+    defaults: {_controller: AcmeMeetingBundle:Main:loadImage }

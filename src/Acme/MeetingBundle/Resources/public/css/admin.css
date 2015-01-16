@@ -23,23 +23,23 @@ table td{
 }
 
 
-#acme_meetingbundle_userman {
+#acme_meetingbundle_userman, #acme_meetingbundle_userwomen {
     width: 55%;
     display: inline-block;
 }
 
-#acme_meetingbundle_userman div {
+#acme_meetingbundle_userman div, #acme_meetingbundle_userwomen div {
     text-align: justify;
     width: 100%;
     margin: 10px 0;
 }
 
-#acme_meetingbundle_userman input {
+#acme_meetingbundle_userman input, #acme_meetingbundle_userwomen input {
     display: inline-block;
     width: 40%;
 }
 
-#acme_meetingbundle_userman label {
+#acme_meetingbundle_userman label, #acme_meetingbundle_userwomen label {
     display: inline-block;
     width: 40%;
     font: 14px Verdana;
@@ -49,4 +49,9 @@ table td{
 #viewProperties{
     text-align: left;
     width: 700px;
+}
+
+#acme_meetingbundle_userman_BirthDate, #acme_meetingbundle_userwomen_BirthDate {
+    width: 40% !important;
+    display: inline-block;
 }

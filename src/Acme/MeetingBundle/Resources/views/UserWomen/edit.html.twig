@@ -1,0 +1,20 @@
+{% extends '::base.html.twig' %}
+{% block stylesheets %}
+    <link href="{{ asset('bundles/ACMEMeeting/css/main.css') }}" type="text/css" rel="stylesheet"/>
+    <link href="{{ asset('bundles/ACMEMeeting/css/admin.css') }}" type="text/css" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+    <h1>UserWomen edit</h1>
+
+    {{ form(edit_form) }}
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('userwomen') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

@@ -13,6 +13,23 @@
 
     <div class="wrapper-info">
         <img class="photo" width="200" height="200" src="{{ asset('uploads/documents/') }}{{ image }}">
+
+
+        <form id="formLoadImage" action="{{ path('loadImage') }}" method="post" {{ form_enctype(form) }}>
+            {{ form_errors(form) }}
+
+            <div>
+                {{ form_errors(form.file) }}
+                {{ form_widget(form.file) }}
+            </div>
+
+            {{ form_rest(form) }}
+
+            <label for="form_file">change a photo</label>
+            <input type="submit"  />
+        </form>
+
+
         <div class="user-info">
             <p>FirstName     <span>{{ FirstName }}</span></p>
             <p>LastName      <span>{{ LastName }}</span></p>

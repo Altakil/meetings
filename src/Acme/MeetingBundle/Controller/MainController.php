@@ -158,6 +158,7 @@ class MainController extends Controller
 
     public function showProfileAction()
     {
+
         $repositoryMan = $this->getDoctrine()
             ->getRepository('AcmeMeetingBundle:UserMan');
         $repositoryWomen = $this->getDoctrine()
@@ -167,6 +168,11 @@ class MainController extends Controller
         $UserWomen = $repositoryWomen->findOneBy(array('email' => $this->get('session')->get('email')));
 
         if ($UserMan) {
+
+            $formMan = $this->createFormBuilder($UserMan)
+                ->add('file', 'file')
+                ->getForm();
+
             return $this->render('AcmeMeetingBundle:Main:profileLoggedUserMan.html.twig', array(
                 'gender' => $UserMan->getGender(),
                 'email' => $UserMan->getEmail(),
@@ -178,8 +184,14 @@ class MainController extends Controller
                 'BirthDate' => $UserMan->getBirthDate(),
                 'MaritalStatus' => $UserMan->getMaritalStatus(),
                 'image' => $UserMan->getImage(),
+                'form' => $formMan->createView(),
             ));
         } else if ($UserWomen) {
+
+            $formWomen = $this->createFormBuilder($UserWomen)
+                ->add('file', 'file')
+                ->getForm();
+
             return $this->render('AcmeMeetingBundle:Main:profileLoggedUserWomen.html.twig', array(
                 'gender' => $UserWomen->getGender(),
                 'email' => $UserWomen->getEmail(),
@@ -194,6 +206,7 @@ class MainController extends Controller
                 'waist' => $UserWomen->getWaist(),
                 'breast' => $UserWomen->getBreast(),
                 'image' => $UserWomen->getImage(),
+                'form' => $formWomen->createView(),
             ));
         }
 
@@ -281,6 +294,50 @@ class MainController extends Controller
                 ));
             }
         }
+    }
+
+    public function loadImageAction(Request $request)
+    {
+        $repositoryMan = $this->getDoctrine()
+            ->getRepository('AcmeMeetingBundle:UserMan');
+        $repositoryWomen = $this->getDoctrine()
+            ->getRepository('AcmeMeetingBundle:UserWomen');
+
+        $UserMan = $repositoryMan->findOneBy(array('email' => $this->get('session')->get('email')));
+        $UserWomen = $repositoryWomen->findOneBy(array('email' => $this->get('session')->get('email')));
+
+        $formWomen = $this->createFormBuilder($UserWomen)
+            ->add('file', 'file')
+            ->getForm();
+        $formMan = $this->createFormBuilder($UserMan)
+            ->add('file', 'file')
+            ->getForm();
+
+        if ($UserMan) {
+            $formMan->handleRequest($request);
+            if ($formMan->isValid()) {
+
+                $UserMan->upload();
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($formMan->getData());
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('showProfile'));
+            }
+
+            } else if ($UserWomen) {
+                $formWomen->handleRequest($request);
+                if ($formWomen->isValid()) {
+
+                    $UserWomen->upload();
+                    $em = $this->getDoctrine()->getEntityManager();
+                    $em->persist($formWomen->getData());
+                    $em->flush();
+
+                    return $this->redirect($this->generateUrl('showProfile'));
+
+                }
+            }
     }
 
 }
