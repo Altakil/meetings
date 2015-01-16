@@ -32,10 +32,20 @@
       <file leaf-file-name="UserManController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Acme/MeetingBundle/Controller/UserManController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.22235434" vertical-offset="799" max-vertical-offset="5083">
-              <caret line="58" column="46" selection-start-line="58" selection-start-column="46" selection-end-line="58" selection-end-column="46" />
+            <state vertical-scroll-proportion="0.9298454" vertical-offset="527" max-vertical-offset="5355">
+              <caret line="77" column="54" selection-start-line="77" selection-start-column="54" selection-end-line="77" selection-end-column="54" />
               <folding>
                 <element signature="e#49#94#0#PHP" expanded="true" />
+                <marker date="1421437512735" expanded="true" signature="2740:2781" placeholder="SELECT p FRO..AcmeMeetingBundle..." />
+                <marker date="1421437512735" expanded="true" signature="2740:2788" placeholder="SELECT p FRO..AcmeMeetingBundle..." />
+                <marker date="1421437512735" expanded="true" signature="2740:2788" placeholder="SELECT * FRO..articles..." />
+                <marker date="1421437512735" expanded="true" signature="2740:2788" placeholder="SELECT * FRO..articles..." />
+                <marker date="1421437512735" expanded="true" signature="2740:2788" placeholder="SELECT p FRO..AcmeMeetingBundle..." />
+                <marker date="1421437512735" expanded="true" signature="2740:2818" placeholder="SELECT p FRO..AcmeMeetingBundle..." />
+                <marker date="1421437512735" expanded="true" signature="2740:2818" placeholder="SELECT p FRO..AcmeMeetingBundle..." />
+                <marker date="1421437512735" expanded="true" signature="2740:2818" placeholder="SELECT p FRO..AcmeMeetingBundle..." />
+                <marker date="1421437512735" expanded="true" signature="2740:2818" placeholder="SELECT p FRO..AcmeMeetingBundle..." />
+                <marker date="1421437512735" expanded="true" signature="2740:2856" placeholder="SELECT p FRO..AcmeMeetingBundle..." />
               </folding>
             </state>
           </provider>
@@ -66,7 +76,7 @@
       <file leaf-file-name="town.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Acme/MeetingBundle/Entity/town.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-15.038462" vertical-offset="969" max-vertical-offset="1547">
+            <state vertical-scroll-proportion="-25.153847" vertical-offset="706" max-vertical-offset="1547">
               <caret line="80" column="32" selection-start-line="80" selection-start-column="32" selection-end-line="80" selection-end-column="32" />
               <folding />
             </state>
@@ -76,7 +86,7 @@
       <file leaf-file-name="userMan.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Acme/MeetingBundle/Entity/userMan.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-13.076923" vertical-offset="0" max-vertical-offset="6409">
+            <state vertical-scroll-proportion="-3.2692308" vertical-offset="255" max-vertical-offset="6409">
               <caret line="20" column="7" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
               <folding />
             </state>
@@ -1021,18 +1031,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Acme/MeetingBundle/Entity/userMan.php">
+    <entry file="file://$PROJECT_DIR$/src/Acme/MeetingBundle/Resources/public/css/admin.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.076923" vertical-offset="0" max-vertical-offset="6409">
-          <caret line="20" column="7" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Acme/MeetingBundle/Entity/town.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.038462" vertical-offset="969" max-vertical-offset="1547">
-          <caret line="80" column="32" selection-start-line="80" selection-start-column="32" selection-end-line="80" selection-end-column="32" />
+        <state vertical-scroll-proportion="0.82167834" vertical-offset="618" max-vertical-offset="1207">
+          <caret line="64" column="29" selection-start-line="64" selection-start-column="29" selection-end-line="64" selection-end-column="29" />
           <folding />
         </state>
       </provider>
@@ -1047,10 +1049,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Acme/MeetingBundle/Resources/public/css/admin.css">
+    <entry file="file://$PROJECT_DIR$/src/Acme/MeetingBundle/Entity/town.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.82167834" vertical-offset="618" max-vertical-offset="1207">
-          <caret line="64" column="29" selection-start-line="64" selection-start-column="29" selection-end-line="64" selection-end-column="29" />
+        <state vertical-scroll-proportion="-25.153847" vertical-offset="706" max-vertical-offset="1547">
+          <caret line="80" column="32" selection-start-line="80" selection-start-column="32" selection-end-line="80" selection-end-column="32" />
           <folding />
         </state>
       </provider>
@@ -1063,12 +1065,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Acme/MeetingBundle/Entity/userMan.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.2692308" vertical-offset="255" max-vertical-offset="6409">
+          <caret line="20" column="7" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Acme/MeetingBundle/Controller/UserManController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22235434" vertical-offset="799" max-vertical-offset="5083">
-          <caret line="58" column="46" selection-start-line="58" selection-start-column="46" selection-end-line="58" selection-end-column="46" />
+        <state vertical-scroll-proportion="0.9298454" vertical-offset="527" max-vertical-offset="5355">
+          <caret line="77" column="54" selection-start-line="77" selection-start-column="54" selection-end-line="77" selection-end-column="54" />
           <folding>
             <element signature="e#49#94#0#PHP" expanded="true" />
+            <marker date="1421437512735" expanded="true" signature="2740:2781" placeholder="SELECT p FRO..AcmeMeetingBundle..." />
+            <marker date="1421437512735" expanded="true" signature="2740:2788" placeholder="SELECT p FRO..AcmeMeetingBundle..." />
+            <marker date="1421437512735" expanded="true" signature="2740:2788" placeholder="SELECT * FRO..articles..." />
+            <marker date="1421437512735" expanded="true" signature="2740:2788" placeholder="SELECT * FRO..articles..." />
+            <marker date="1421437512735" expanded="true" signature="2740:2788" placeholder="SELECT p FRO..AcmeMeetingBundle..." />
+            <marker date="1421437512735" expanded="true" signature="2740:2818" placeholder="SELECT p FRO..AcmeMeetingBundle..." />
+            <marker date="1421437512735" expanded="true" signature="2740:2818" placeholder="SELECT p FRO..AcmeMeetingBundle..." />
+            <marker date="1421437512735" expanded="true" signature="2740:2818" placeholder="SELECT p FRO..AcmeMeetingBundle..." />
+            <marker date="1421437512735" expanded="true" signature="2740:2818" placeholder="SELECT p FRO..AcmeMeetingBundle..." />
+            <marker date="1421437512735" expanded="true" signature="2740:2856" placeholder="SELECT p FRO..AcmeMeetingBundle..." />
           </folding>
         </state>
       </provider>
