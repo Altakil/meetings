@@ -5,13 +5,11 @@
 
 {% block content %}
     <div class="wrapper-authorization">
-        <form id="womanForm" action="{{ path('main') }}" method="post" {{ form_enctype(form) }}>
+        <form id="Form" action="{{ path('loginAdmin') }}" method="post" {{ form_enctype(form) }}>
             {{ form_widget(form) }}
 
             <input type="submit" id="submitAuthorization" />
         </form>
     </div>
 
-    <a class="registration-link" href="{{ path('registration') }}">Register</a>
-    <a class="registration-link" href="{{ path('loginAdmin') }}">Admin Panel</a>
 {% endblock %}

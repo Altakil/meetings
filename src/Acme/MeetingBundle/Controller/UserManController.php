@@ -6,7 +6,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Acme\MeetingBundle\Entity\UserMan;
+use Acme\MeetingBundle\Entity\country;
+use Acme\MeetingBundle\Entity\town;
 use Acme\MeetingBundle\Form\UserManType;
+use Symfony\Component\HttpFoundation\Response;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * UserMan controller.
@@ -19,16 +23,64 @@ class UserManController extends Controller
      * Lists all UserMan entities.
      *
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        if ($this->get('session')->has('admin')) {
+            $EntityCountries = $this->getDoctrine()->getManager()->getRepository('AcmeMeetingBundle:country')->findAll();
 
-        $entities = $em->getRepository('AcmeMeetingBundle:UserMan')->findAll();
+            $arrayCountries = array();
+            foreach($EntityCountries as $value){
+                $arrayCountries[] = $value->getName();
+            }
 
-        return $this->render('AcmeMeetingBundle:UserMan:index.html.twig', array(
-            'entities' => $entities,
-        ));
+            $formBuilder = $this->createFormBuilder($EntityCountries)->add('Country', 'choice', array(
+                'choices' =>  $arrayCountries,
+                'required'  => false,
+            ));
+
+            $form = $formBuilder->getForm();
+
+
+            $em = $this->getDoctrine()->getManager();
+
+            $entities = $em->getRepository('AcmeMeetingBundle:UserMan')->findAll();
+            $request_value = $request->request->all();
+
+            if($request->getMethod() == 'POST'){
+                $index = $request_value['form']['Country'] + 1;
+                $countryChoice = $this->getDoctrine()->getManager()->getRepository('AcmeMeetingBundle:country')->find($index);
+                $listCities = $countryChoice->getTowns();
+                $arrayCities = array();
+                foreach($listCities as $value){
+                    $arrayCities[] = $value->getName();
+                }
+
+                $formBuilder = $this->createFormBuilder($arrayCities)->add('Cities', 'choice', array(
+                    'choices' =>  $arrayCities,
+                    'required'  => false,
+                ));
+
+
+                $form = $formBuilder->getForm();
+
+                return $this->render('AcmeMeetingBundle:UserMan:index.html.twig', array(
+                    'entities' => $entities,
+                    'form' => $form->createView(),
+                ));
+            }
+            else{
+
+                return $this->render('AcmeMeetingBundle:UserMan:index.html.twig', array(
+                    'entities' => $entities,
+                    'form' => $form->createView(),
+                ));
+            }
+
+        } else {
+            return new Response("you haven't rights");
+        }
     }
+
     /**
      * Creates a new UserMan entity.
      *
@@ -49,7 +101,7 @@ class UserManController extends Controller
 
         return $this->render('AcmeMeetingBundle:UserMan:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -79,11 +131,11 @@ class UserManController extends Controller
     public function newAction()
     {
         $entity = new UserMan();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return $this->render('AcmeMeetingBundle:UserMan:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -93,20 +145,24 @@ class UserManController extends Controller
      */
     public function showAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+        if ($this->get('session')->has('admin')) {
+            $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('AcmeMeetingBundle:UserMan')->find($id);
+            $entity = $em->getRepository('AcmeMeetingBundle:UserMan')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find UserMan entity.');
+            if (!$entity) {
+                throw $this->createNotFoundException('Unable to find UserMan entity.');
+            }
+
+            $deleteForm = $this->createDeleteForm($id);
+
+            return $this->render('AcmeMeetingBundle:UserMan:show.html.twig', array(
+                'entity' => $entity,
+                'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            return new Response("you haven't rights");
         }
-
-        $deleteForm = $this->createDeleteForm($id);
-
-        return $this->render('AcmeMeetingBundle:UserMan:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
-        ));
     }
 
     /**
@@ -115,31 +171,35 @@ class UserManController extends Controller
      */
     public function editAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+        if ($this->get('session')->has('admin')) {
+            $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('AcmeMeetingBundle:UserMan')->find($id);
+            $entity = $em->getRepository('AcmeMeetingBundle:UserMan')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find UserMan entity.');
+            if (!$entity) {
+                throw $this->createNotFoundException('Unable to find UserMan entity.');
+            }
+
+            $editForm = $this->createEditForm($entity);
+            $deleteForm = $this->createDeleteForm($id);
+
+            return $this->render('AcmeMeetingBundle:UserMan:edit.html.twig', array(
+                'entity' => $entity,
+                'edit_form' => $editForm->createView(),
+                'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            return new Response("you haven't rights");
         }
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        return $this->render('AcmeMeetingBundle:UserMan:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
     }
 
     /**
-    * Creates a form to edit a UserMan entity.
-    *
-    * @param UserMan $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a UserMan entity.
+     *
+     * @param UserMan $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(UserMan $entity)
     {
         $form = $this->createForm(new UserManType(), $entity, array(
@@ -151,58 +211,68 @@ class UserManController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing UserMan entity.
      *
      */
     public function updateAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('AcmeMeetingBundle:UserMan')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find UserMan entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isValid()) {
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('userman_edit', array('id' => $id)));
-        }
-
-        return $this->render('AcmeMeetingBundle:UserMan:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-    /**
-     * Deletes a UserMan entity.
-     *
-     */
-    public function deleteAction(Request $request, $id)
-    {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
+        if ($this->get('session')->has('admin')) {
             $em = $this->getDoctrine()->getManager();
+
             $entity = $em->getRepository('AcmeMeetingBundle:UserMan')->find($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find UserMan entity.');
             }
 
-            $em->remove($entity);
-            $em->flush();
-        }
+            $deleteForm = $this->createDeleteForm($id);
+            $editForm = $this->createEditForm($entity);
+            $editForm->handleRequest($request);
 
-        return $this->redirect($this->generateUrl('userman'));
+            if ($editForm->isValid()) {
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('userman_edit', array('id' => $id)));
+            }
+
+            return $this->render('AcmeMeetingBundle:UserMan:edit.html.twig', array(
+                'entity' => $entity,
+                'edit_form' => $editForm->createView(),
+                'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            return new Response("you haven't rights");
+        }
+    }
+
+    /**
+     * Deletes a UserMan entity.
+     *
+     */
+    public function deleteAction(Request $request, $id)
+    {
+        if ($this->get('session')->has('admin')) {
+            $form = $this->createDeleteForm($id);
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $entity = $em->getRepository('AcmeMeetingBundle:UserMan')->find($id);
+
+                if (!$entity) {
+                    throw $this->createNotFoundException('Unable to find UserMan entity.');
+                }
+
+                $em->remove($entity);
+                $em->flush();
+            }
+
+            return $this->redirect($this->generateUrl('userman'));
+        } else {
+            return new Response("you haven't rights");
+        }
     }
 
     /**
@@ -218,7 +288,6 @@ class UserManController extends Controller
             ->setAction($this->generateUrl('userman_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
-        ;
+            ->getForm();
     }
 }

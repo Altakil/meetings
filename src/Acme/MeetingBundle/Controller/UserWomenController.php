@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Acme\MeetingBundle\Entity\UserWomen;
 use Acme\MeetingBundle\Form\UserWomenType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * UserWomen controller.
@@ -21,14 +22,19 @@ class UserWomenController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        if ($this->get('session')->has('admin')) {
+            $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('AcmeMeetingBundle:UserWomen')->findAll();
+            $entities = $em->getRepository('AcmeMeetingBundle:UserWomen')->findAll();
 
-        return $this->render('AcmeMeetingBundle:UserWomen:index.html.twig', array(
-            'entities' => $entities,
-        ));
+            return $this->render('AcmeMeetingBundle:UserWomen:index.html.twig', array(
+                'entities' => $entities,
+            ));
+        } else {
+            return new Response("you haven't rights");
+        }
     }
+
     /**
      * Creates a new UserWomen entity.
      *
@@ -49,7 +55,7 @@ class UserWomenController extends Controller
 
         return $this->render('AcmeMeetingBundle:UserWomen:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -79,11 +85,11 @@ class UserWomenController extends Controller
     public function newAction()
     {
         $entity = new UserWomen();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return $this->render('AcmeMeetingBundle:UserWomen:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -93,20 +99,24 @@ class UserWomenController extends Controller
      */
     public function showAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+        if ($this->get('session')->has('admin')) {
+            $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('AcmeMeetingBundle:UserWomen')->find($id);
+            $entity = $em->getRepository('AcmeMeetingBundle:UserWomen')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find UserWomen entity.');
+            if (!$entity) {
+                throw $this->createNotFoundException('Unable to find UserWomen entity.');
+            }
+
+            $deleteForm = $this->createDeleteForm($id);
+
+            return $this->render('AcmeMeetingBundle:UserWomen:show.html.twig', array(
+                'entity' => $entity,
+                'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            return new Response("you haven't rights");
         }
-
-        $deleteForm = $this->createDeleteForm($id);
-
-        return $this->render('AcmeMeetingBundle:UserWomen:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
-        ));
     }
 
     /**
@@ -115,31 +125,35 @@ class UserWomenController extends Controller
      */
     public function editAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+        if ($this->get('session')->has('admin')) {
+            $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('AcmeMeetingBundle:UserWomen')->find($id);
+            $entity = $em->getRepository('AcmeMeetingBundle:UserWomen')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find UserWomen entity.');
+            if (!$entity) {
+                throw $this->createNotFoundException('Unable to find UserWomen entity.');
+            }
+
+            $editForm = $this->createEditForm($entity);
+            $deleteForm = $this->createDeleteForm($id);
+
+            return $this->render('AcmeMeetingBundle:UserWomen:edit.html.twig', array(
+                'entity' => $entity,
+                'edit_form' => $editForm->createView(),
+                'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            return new Response("you haven't rights");
         }
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        return $this->render('AcmeMeetingBundle:UserWomen:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
     }
 
     /**
-    * Creates a form to edit a UserWomen entity.
-    *
-    * @param UserWomen $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a UserWomen entity.
+     *
+     * @param UserWomen $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(UserWomen $entity)
     {
         $form = $this->createForm(new UserWomenType(), $entity, array(
@@ -151,58 +165,68 @@ class UserWomenController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing UserWomen entity.
      *
      */
     public function updateAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('AcmeMeetingBundle:UserWomen')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find UserWomen entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isValid()) {
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('userwomen_edit', array('id' => $id)));
-        }
-
-        return $this->render('AcmeMeetingBundle:UserWomen:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-    /**
-     * Deletes a UserWomen entity.
-     *
-     */
-    public function deleteAction(Request $request, $id)
-    {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
+        if ($this->get('session')->has('admin')) {
             $em = $this->getDoctrine()->getManager();
+
             $entity = $em->getRepository('AcmeMeetingBundle:UserWomen')->find($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find UserWomen entity.');
             }
 
-            $em->remove($entity);
-            $em->flush();
-        }
+            $deleteForm = $this->createDeleteForm($id);
+            $editForm = $this->createEditForm($entity);
+            $editForm->handleRequest($request);
 
-        return $this->redirect($this->generateUrl('userwomen'));
+            if ($editForm->isValid()) {
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('userwomen_edit', array('id' => $id)));
+            }
+
+            return $this->render('AcmeMeetingBundle:UserWomen:edit.html.twig', array(
+                'entity' => $entity,
+                'edit_form' => $editForm->createView(),
+                'delete_form' => $deleteForm->createView(),
+            ));
+        } else {
+            return new Response("you haven't rights");
+        }
+    }
+
+    /**
+     * Deletes a UserWomen entity.
+     *
+     */
+    public function deleteAction(Request $request, $id)
+    {
+        if ($this->get('session')->has('admin')) {
+            $form = $this->createDeleteForm($id);
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $entity = $em->getRepository('AcmeMeetingBundle:UserWomen')->find($id);
+
+                if (!$entity) {
+                    throw $this->createNotFoundException('Unable to find UserWomen entity.');
+                }
+
+                $em->remove($entity);
+                $em->flush();
+            }
+
+            return $this->redirect($this->generateUrl('userwomen'));
+        } else {
+            return new Response("you haven't rights");
+        }
     }
 
     /**
@@ -218,7 +242,6 @@ class UserWomenController extends Controller
             ->setAction($this->generateUrl('userwomen_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
-        ;
+            ->getForm();
     }
 }

@@ -22,6 +22,10 @@ table td{
     padding:8px 5px;
 }
 
+.link-user{
+    margin: 5px 10px 20px 10px;
+    display: inline-block;
+}
 
 #acme_meetingbundle_userman, #acme_meetingbundle_userwomen {
     width: 55%;
@@ -54,4 +58,9 @@ table td{
 #acme_meetingbundle_userman_BirthDate, #acme_meetingbundle_userwomen_BirthDate {
     width: 40% !important;
     display: inline-block;
+}
+
+#formSorted{
+    width: 340px;
+    margin: 17px 0 34px 52px;
 }

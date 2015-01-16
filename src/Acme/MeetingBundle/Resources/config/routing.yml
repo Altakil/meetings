@@ -36,3 +36,11 @@ editProfile:
 loadImage:
     pattern: /loadImage
     defaults: {_controller: AcmeMeetingBundle:Main:loadImage }
+
+loginAdmin:
+    pattern: /loginAdmin
+    defaults: {_controller: AcmeMeetingBundle:Main:loginAdmin }
+
+adminOut:
+    pattern: /adminOut
+    defaults: {_controller: AcmeMeetingBundle:Main:adminOut }

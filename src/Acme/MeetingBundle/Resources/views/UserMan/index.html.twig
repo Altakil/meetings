@@ -6,11 +6,20 @@
 
 {% block content %}
     <h1>Man list</h1>
+    <a class="link-user" href="{{ path('userman') }}">Man</a>
+    <a class="link-user" href="{{ path('userwomen') }}">Women</a>
+    <a class="link-user" href="{{ path('adminOut') }}">Logout</a>
+
+    <form id="formSorted" action="{{ path('userman') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+
+        <input type="submit" />
+    </form>
+
 
     <table class="records_list">
         <thead>
             <tr>
-                {#<th>Id</th>#}
                 <th>Gender</th>
                 <th>Email</th>
                 <th>Password</th>
