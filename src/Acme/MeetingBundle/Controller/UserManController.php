@@ -25,42 +25,64 @@ class UserManController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $array_page = array();
         if ($this->get('session')->has('admin')) {
             $EntityCountries = $this->getDoctrine()->getManager()->getRepository('AcmeMeetingBundle:country')->findAll();
 
             $arrayCountries = array();
-            foreach($EntityCountries as $value){
+            foreach ($EntityCountries as $value) {
                 $arrayCountries[] = $value->getName();
             }
 
             $formBuilder = $this->createFormBuilder($EntityCountries)->add('Country', 'choice', array(
-                'choices' =>  $arrayCountries,
-                'required'  => false,
+                'choices' => $arrayCountries,
+                'required' => false,
             ));
-
             $form = $formBuilder->getForm();
 
 
             $em = $this->getDoctrine()->getManager();
 
-            $entities = $em->getRepository('AcmeMeetingBundle:UserMan')->findAll();
+            $count = count($em->getRepository('AcmeMeetingBundle:UserMan')->findAll());
+            $max = 5;
+            $page = ceil($count / $max);
+            $current = $request->query->get('id');
+            for($i = 0; $i < $page; $i++){
+                $array_page[] = $i;
+            }
+            $repository = $em->getRepository('AcmeMeetingBundle:UserMan');
+            $query = $repository->createQueryBuilder('p')
+                ->setMaxResults($max)
+                ->setFirstResult($current * $max)
+                ->getQuery();
+
+            $entities = $query->getResult();
+
             $request_value = $request->request->all();
 
-            if($request->getMethod() == 'POST'){
+            if ($request->getMethod() == 'POST') {
+                if (isset($request_value['form']['Country']) && $request_value['form']['Country'] != "") {
 
-                if(isset($request_value['form']['Country'])){
                     $index = $request_value['form']['Country'] + 1;
                     $countryChoice = $this->getDoctrine()->getManager()->getRepository('AcmeMeetingBundle:country')->find($index);
                     $listCities = $countryChoice->getTowns();
 
                     $arrayCities = array();
-                    foreach($listCities as $value){
+                    foreach ($listCities as $value) {
                         $arrayCities[$value->getName()] = $value->getName();
                     }
 
+
+                    $parameter = $countryChoice->getName();
+                    $em = $this->getDoctrine()->getEntityManager();
+                    $query = $query = $em->createQuery('SELECT p FROM AcmeMeetingBundle:UserMan p WHERE p.country = :country ORDER BY p.country'
+                    )->setParameter('country', $parameter);
+                    $entities = $query->getResult();
+
+
                     $formBuilder = $this->createFormBuilder($arrayCities)->add('Cities', 'choice', array(
-                        'choices' =>  $arrayCities,
-                        'required'  => false,
+                        'choices' => $arrayCities,
+                        'required' => false,
                     ));
 
                     $form = $formBuilder->getForm();
@@ -68,9 +90,10 @@ class UserManController extends Controller
                     return $this->render('AcmeMeetingBundle:UserMan:index.html.twig', array(
                         'entities' => $entities,
                         'form' => $form->createView(),
+                        'array' => $array_page,
                     ));
-                }
-                else if(isset($request_value['form']['Cities'])){
+
+                } else if (isset($request_value['form']['Cities']) && $request_value['form']['Cities'] != "") {
 
                     $parameter = substr($request_value['form']['Cities'], 0);
                     $em = $this->getDoctrine()->getEntityManager();
@@ -81,14 +104,21 @@ class UserManController extends Controller
                     return $this->render('AcmeMeetingBundle:UserMan:index.html.twig', array(
                         'entities' => $entities,
                         'form' => $form->createView(),
+                        'array' => $array_page,
+                    ));
+                } else {
+                    return $this->render('AcmeMeetingBundle:UserMan:index.html.twig', array(
+                        'entities' => $entities,
+                        'form' => $form->createView(),
+                        'array' => $array_page,
                     ));
                 }
-            }
-            else{
+            } else {
 
                 return $this->render('AcmeMeetingBundle:UserMan:index.html.twig', array(
                     'entities' => $entities,
                     'form' => $form->createView(),
+                    'array' => $array_page,
                 ));
             }
 
