@@ -1,0 +1,66 @@
+table{
+    text-align: center;
+    font: 12px Verdana;
+    width: 100%;
+}
+
+.wrapper{
+    width: auto;
+    max-width: 1200px;
+}
+
+ul{
+    list-style: none;
+    margin:0;
+}
+
+table a{
+    margin: 0;
+}
+
+table td{
+    padding:8px 5px;
+}
+
+.link-user{
+    margin: 5px 10px 20px 10px;
+    display: inline-block;
+}
+
+#acme_meetingbundle_userman, #acme_meetingbundle_userwomen {
+    width: 55%;
+    display: inline-block;
+}
+
+#acme_meetingbundle_userman div, #acme_meetingbundle_userwomen div {
+    text-align: justify;
+    width: 100%;
+    margin: 10px 0;
+}
+
+#acme_meetingbundle_userman input, #acme_meetingbundle_userwomen input {
+    display: inline-block;
+    width: 40%;
+}
+
+#acme_meetingbundle_userman label, #acme_meetingbundle_userwomen label {
+    display: inline-block;
+    width: 40%;
+    font: 14px Verdana;
+}
+
+
+#viewProperties{
+    text-align: left;
+    width: 700px;
+}
+
+#acme_meetingbundle_userman_BirthDate, #acme_meetingbundle_userwomen_BirthDate {
+    width: 40% !important;
+    display: inline-block;
+}
+
+#formSorted{
+    width: 340px;
+    margin: 17px 0 34px 52px;
+}

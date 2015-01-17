@@ -1,0 +1,72 @@
+{% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+    <link href="{{ asset('bundles/ACMEMeeting/css/main.css') }}" type="text/css" rel="stylesheet"/>
+    <link href="{{ asset('bundles/ACMEMeeting/css/admin.css') }}" type="text/css" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+    <h1>UserWomen list</h1>
+    <a class="link-user" href="{{ path('userman') }}">Man</a>
+    <a class="link-user" href="{{ path('userwomen') }}">Women</a>
+    <a class="link-user" href="{{ path('adminOut') }}">Logout</a>
+
+    <form id="formSorted" action="{{ path('userwomen') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+
+        <input type="submit" />
+    </form>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Country</th>
+                <th>City</th>
+                <th>Birthdate</th>
+                <th>Maritalstatus</th>
+                <th>Breast</th>
+                <th>Waist</th>
+                <th>Hips</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.gender }}</td>
+                <td>{{ entity.email }}</td>
+                <td>{{ entity.password }}</td>
+                <td>{{ entity.FirstName }}</td>
+                <td>{{ entity.LastName }}</td>
+                <td>{{ entity.country }}</td>
+                <td>{{ entity.city }}</td>
+                <td>{% if entity.BirthDate %}{{ entity.BirthDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.MaritalStatus }}</td>
+                <td>{{ entity.breast }}</td>
+                <td>{{ entity.waist }}</td>
+                <td>{{ entity.Hips }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('userwomen_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('userwomen_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% for arr in array %}
+        <a href="{{ path('userwomen', { 'id': arr  }) }}">{{ arr + 1 }}</a>
+    {% endfor %}
+
+    {% endblock %}

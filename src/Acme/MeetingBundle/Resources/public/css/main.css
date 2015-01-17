@@ -70,3 +70,13 @@ input[name=gender] {
 .reg{
     display: block;
 }
+
+#formLoadImage{
+    width: 200px;
+    position: absolute;
+}
+
+#formLoadImage input, #formLoadImage div{
+    width: 118px;
+    margin: 7px 0;
+}

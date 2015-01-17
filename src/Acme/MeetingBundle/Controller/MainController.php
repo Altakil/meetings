@@ -5,6 +5,7 @@ namespace Acme\MeetingBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Acme\MeetingBundle\Entity\UserMan;
 use Acme\MeetingBundle\Entity\UserWomen;
+use Acme\MeetingBundle\Entity\adminProfile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
@@ -117,27 +118,41 @@ class MainController extends Controller
             ->add('file', 'file')
             ->getForm();
 
+        $repositoryMan = $this->getDoctrine()
+            ->getRepository('AcmeMeetingBundle:UserMan');
+        $repositoryWomen = $this->getDoctrine()
+            ->getRepository('AcmeMeetingBundle:UserWomen');
+
         if ($request->getMethod() == 'POST') {
-            if ($req['form']['gender'] == "woman") {
-                $formWomen->handleRequest($request);
-                if ($formWomen->isValid()) {
-                    $userWomen->upload();
-                    $em = $this->getDoctrine()->getEntityManager();
-                    $em->persist($formWomen->getData());
-                    $em->flush();
 
-                    return $this->render('AcmeMeetingBundle:Main:userSuccessCRUD.html.twig', array('action' => "registered",));
-                }
-            } else if ($req['form']['gender'] == "man") {
-                $formMan->handleRequest($request);
-                if ($formMan->isValid()) {
-                    $userMan->upload();
-                    $em = $this->getDoctrine()->getEntityManager();
-                    $em->persist($formMan->getData());
-                    $em->flush();
+            $request_value = $request->request->all();
+            $Man = $repositoryMan->findOneBy(array('email' => $request_value['form']['email']));
+            $Women = $repositoryWomen->findOneBy(array('email' => $request_value['form']['email']));
 
-                    return $this->render('AcmeMeetingBundle:Main:userSuccessCRUD.html.twig', array('action' => "registered",));
+            if (!$Man && !$Women) {
+                if ($req['form']['gender'] == "woman") {
+                    $formWomen->handleRequest($request);
+                    if ($formWomen->isValid()) {
+                        $userWomen->upload();
+                        $em = $this->getDoctrine()->getEntityManager();
+                        $em->persist($formWomen->getData());
+                        $em->flush();
+
+                        return $this->render('AcmeMeetingBundle:Main:userSuccessCRUD.html.twig', array('action' => "registered",));
+                    }
+                } else if ($req['form']['gender'] == "man") {
+                    $formMan->handleRequest($request);
+                    if ($formMan->isValid()) {
+                        $userMan->upload();
+                        $em = $this->getDoctrine()->getEntityManager();
+                        $em->persist($formMan->getData());
+                        $em->flush();
+
+                        return $this->render('AcmeMeetingBundle:Main:userSuccessCRUD.html.twig', array('action' => "registered",));
+                    }
                 }
+            } else {
+                return new Response("Sorry User on that email exist");
             }
         } else {
             return $this->render('AcmeMeetingBundle:Main:registration.html.twig', array(
@@ -158,6 +173,7 @@ class MainController extends Controller
 
     public function showProfileAction()
     {
+
         $repositoryMan = $this->getDoctrine()
             ->getRepository('AcmeMeetingBundle:UserMan');
         $repositoryWomen = $this->getDoctrine()
@@ -167,6 +183,11 @@ class MainController extends Controller
         $UserWomen = $repositoryWomen->findOneBy(array('email' => $this->get('session')->get('email')));
 
         if ($UserMan) {
+
+            $formMan = $this->createFormBuilder($UserMan)
+                ->add('file', 'file')
+                ->getForm();
+
             return $this->render('AcmeMeetingBundle:Main:profileLoggedUserMan.html.twig', array(
                 'gender' => $UserMan->getGender(),
                 'email' => $UserMan->getEmail(),
@@ -178,8 +199,14 @@ class MainController extends Controller
                 'BirthDate' => $UserMan->getBirthDate(),
                 'MaritalStatus' => $UserMan->getMaritalStatus(),
                 'image' => $UserMan->getImage(),
+                'form' => $formMan->createView(),
             ));
         } else if ($UserWomen) {
+
+            $formWomen = $this->createFormBuilder($UserWomen)
+                ->add('file', 'file')
+                ->getForm();
+
             return $this->render('AcmeMeetingBundle:Main:profileLoggedUserWomen.html.twig', array(
                 'gender' => $UserWomen->getGender(),
                 'email' => $UserWomen->getEmail(),
@@ -194,6 +221,7 @@ class MainController extends Controller
                 'waist' => $UserWomen->getWaist(),
                 'breast' => $UserWomen->getBreast(),
                 'image' => $UserWomen->getImage(),
+                'form' => $formWomen->createView(),
             ));
         }
 
@@ -283,6 +311,92 @@ class MainController extends Controller
         }
     }
 
+    public function loadImageAction(Request $request)
+    {
+        $repositoryMan = $this->getDoctrine()
+            ->getRepository('AcmeMeetingBundle:UserMan');
+        $repositoryWomen = $this->getDoctrine()
+            ->getRepository('AcmeMeetingBundle:UserWomen');
+
+        $UserMan = $repositoryMan->findOneBy(array('email' => $this->get('session')->get('email')));
+        $UserWomen = $repositoryWomen->findOneBy(array('email' => $this->get('session')->get('email')));
+
+        $formWomen = $this->createFormBuilder($UserWomen)
+            ->add('file', 'file')
+            ->getForm();
+        $formMan = $this->createFormBuilder($UserMan)
+            ->add('file', 'file')
+            ->getForm();
+
+        if ($UserMan) {
+            $formMan->handleRequest($request);
+            if ($formMan->isValid()) {
+
+                $UserMan->upload();
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($formMan->getData());
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('showProfile'));
+            }
+
+        } else if ($UserWomen) {
+            $formWomen->handleRequest($request);
+            if ($formWomen->isValid()) {
+
+                $UserWomen->upload();
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($formWomen->getData());
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('showProfile'));
+
+            }
+        }
+    }
+
+    public function loginAdminAction(Request $request){
+
+        if(!$this->get('session')->has('admin')){
+            $request_value = $request->request->all();
+
+            $repository = $this->getDoctrine()
+                ->getRepository('AcmeMeetingBundle:adminProfile');
+
+            $admin = new adminProfile();
+
+            $form = $this->createFormBuilder($admin)
+                ->add('admin', 'text')
+                ->add('password', 'text')
+                ->getForm();
+
+            if ($request->getMethod() == 'POST'){
+                $admin = $repository->findOneBy(array('admin' => $request_value['form']['admin']));
+                if(!$admin){
+                    return new Response("Sorry invalid login/password");
+                }
+                else if($request_value['form']['admin'] == $admin->getAdmin() && $request_value['form']['password'] == $admin->getPassword()){
+                    $this->get('session')->set('admin', $request_value['form']['admin']);
+                    return $this->redirect($this->generateUrl('userman'));
+                }
+                else{
+                    return new Response("Sorry invalid login/password");
+                }
+            }
+            else{
+                return $this->render('AcmeMeetingBundle:Admin:adminPanelEnter.html.twig', array(
+                    'form' => $form->createView(),
+                ));
+            }
+        }else{
+            return $this->redirect($this->generateUrl('userman'));
+        }
+    }
+
+    public function adminOutAction(){
+        $this->get('session')->remove('admin');
+        return $this->redirect($this->generateUrl('main'));
+    }
 }
 
 ?>

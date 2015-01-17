@@ -1,0 +1,31 @@
+<?php
+namespace Acme\MeetingBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="sortFields")
+ */
+class sortFields
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    protected $country;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    protected $city;
+
+}
+
+?>

@@ -1,0 +1,30 @@
+userman:
+    path:     /
+    defaults: { _controller: "AcmeMeetingBundle:UserMan:index" }
+
+userman_show:
+    path:     /{id}/show
+    defaults: { _controller: "AcmeMeetingBundle:UserMan:show" }
+
+userman_new:
+    path:     /new
+    defaults: { _controller: "AcmeMeetingBundle:UserMan:new" }
+
+userman_create:
+    path:     /create
+    defaults: { _controller: "AcmeMeetingBundle:UserMan:create" }
+    requirements: { _method: post }
+
+userman_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AcmeMeetingBundle:UserMan:edit" }
+
+userman_update:
+    path:     /{id}/update
+    defaults: { _controller: "AcmeMeetingBundle:UserMan:update" }
+    requirements: { _method: post|put }
+
+userman_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AcmeMeetingBundle:UserMan:delete" }
+    requirements: { _method: post|delete }
