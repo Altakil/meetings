@@ -10,7 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
-
+use Acme\MeetingBundle\Form\manRegFormType;
+use Acme\MeetingBundle\Form\womenRegFormType;
+use Acme\MeetingBundle\Form\UserManType;
+use Acme\MeetingBundle\Form\UserWomenType;
 
 class MainController extends Controller
 {
@@ -79,8 +82,30 @@ class MainController extends Controller
         return $this->redirect($this->generateUrl('main'));
     }
 
+
+    public function ajaxAction(Request $request){
+        $query = $this->getRequest()->get('request');
+
+        $countryChoice = $this->getDoctrine()->getManager()->getRepository('AcmeMeetingBundle:country')->find($query);
+        $listCities = $countryChoice->getTowns();
+
+        $arrayCities = array();
+        foreach ($listCities as $value) {
+            $arrayCities[$value->getName()] = $value->getName();
+        }
+
+        return new Response(json_encode($arrayCities));
+    }
+
     public function registrationAction(Request $request)
     {
+        $EntityCountries = $this->getDoctrine()->getManager()->getRepository('AcmeMeetingBundle:country')->findAll();
+
+        $arrayCountries = array();
+        foreach ($EntityCountries as $value) {
+            $arrayCountries[$value->getId()] = $value->getName();
+        }
+
         $userMan = new UserMan();
         $userWomen = new UserWomen();
 
@@ -92,11 +117,16 @@ class MainController extends Controller
             ->add('password', 'text')
             ->add('FirstName', 'text')
             ->add('LastName', 'text')
-            ->add('country', 'text')
-            ->add('city', 'text')
-            ->add('city', 'text')
+            ->add('Country', 'choice', array(
+                'choices' => $arrayCountries,
+                'required' => true,
+            ))
+            ->add('city', 'choice')
             ->add('BirthDate', 'date')
-            ->add('MaritalStatus', 'text')
+            ->add('MaritalStatus', 'choice', array(
+                'choices' => array('married' => 'married', 'not married' => 'not married'),
+                'required' => true,
+            ))
             ->add('BodyType', 'text')
             ->add('file', 'file')
             ->getForm();
@@ -107,11 +137,16 @@ class MainController extends Controller
             ->add('password', 'text')
             ->add('FirstName', 'text')
             ->add('LastName', 'text')
-            ->add('country', 'text')
-            ->add('city', 'text')
-            ->add('city', 'text')
+            ->add('Country', 'choice', array(
+                'choices' => $arrayCountries,
+                'required' => true,
+            ))
+            ->add('city', 'choice')
             ->add('BirthDate', 'date')
-            ->add('MaritalStatus', 'text')
+            ->add('MaritalStatus', 'choice', array(
+                'choices' => array('married' => 'married', 'not married' => 'not married'),
+                'required' => true,
+            ))
             ->add('breast', 'text')
             ->add('waist', 'text')
             ->add('Hips', 'text')
@@ -240,33 +275,35 @@ class MainController extends Controller
         $UserMan = $repositoryMan->findOneBy(array('email' => $this->get('session')->get('email')));
         $UserWomen = $repositoryWomen->findOneBy(array('email' => $this->get('session')->get('email')));
 
-        $formMan = $this->createFormBuilder($UserMan)
-            ->add('gender', 'hidden')
-            ->add('email', 'text')
-            ->add('password', 'text')
-            ->add('FirstName', 'text')
-            ->add('LastName', 'text')
-            ->add('country', 'text')
-            ->add('city', 'text')
-            ->add('BirthDate', 'date')
-            ->add('MaritalStatus', 'text')
-            ->add('BodyType', 'text')
-            ->getForm();
-
-        $formWomen = $this->createFormBuilder($UserWomen)
-            ->add('gender', 'hidden')
-            ->add('email', 'text')
-            ->add('password', 'text')
-            ->add('FirstName', 'text')
-            ->add('LastName', 'text')
-            ->add('country', 'text')
-            ->add('city', 'text')
-            ->add('BirthDate', 'date')
-            ->add('MaritalStatus', 'text')
-            ->add('breast', 'text')
-            ->add('waist', 'text')
-            ->add('Hips', 'text')
-            ->getForm();
+//        $formMan = $this->createFormBuilder($UserMan)
+//            ->add('gender', 'hidden')
+//            ->add('email', 'text')
+//            ->add('password', 'text')
+//            ->add('FirstName', 'text')
+//            ->add('LastName', 'text')
+//            ->add('country', 'text')
+//            ->add('city', 'text')
+//            ->add('BirthDate', 'date')
+//            ->add('MaritalStatus', 'text')
+//            ->add('BodyType', 'text')
+//            ->getForm();
+//
+//        $formWomen = $this->createFormBuilder($UserWomen)
+//            ->add('gender', 'hidden')
+//            ->add('email', 'text')
+//            ->add('password', 'text')
+//            ->add('FirstName', 'text')
+//            ->add('LastName', 'text')
+//            ->add('country', 'text')
+//            ->add('city', 'text')
+//            ->add('BirthDate', 'date')
+//            ->add('MaritalStatus', 'text')
+//            ->add('breast', 'text')
+//            ->add('waist', 'text')
+//            ->add('Hips', 'text')
+//            ->getForm();
+        $formMan = $this->createForm(new UserManType(), $UserMan);
+        $formWomen = $this->createForm(new UserWomenType(), $UserWomen);
 
         $request_value = $request->request->all();
 
