@@ -43,6 +43,6 @@ class UserManType extends AbstractType
      */
     public function getName()
     {
-        return 'acme_meetingbundle_userman';
+        return 'form';
     }
 }

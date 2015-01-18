@@ -2,6 +2,7 @@
 
 namespace Acme\MeetingBundle\Controller;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Acme\MeetingBundle\Entity\UserMan;
 use Acme\MeetingBundle\Entity\UserWomen;
@@ -10,7 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
-
+use Acme\MeetingBundle\Form\manRegFormType;
+use Acme\MeetingBundle\Form\womenRegFormType;
+use Acme\MeetingBundle\Form\UserManType;
+use Acme\MeetingBundle\Form\UserWomenType;
 
 class MainController extends Controller
 {
@@ -79,24 +83,50 @@ class MainController extends Controller
         return $this->redirect($this->generateUrl('main'));
     }
 
+    public function ajaxAction(Request $request)
+    {
+        $query = $this->getRequest()->get('request');
+
+        $countryChoice = $this->getDoctrine()->getManager()->getRepository('AcmeMeetingBundle:country')->findOneByName($query);
+        $listCities = $countryChoice->getTowns();
+
+        $arrayCities = array();
+        foreach ($listCities as $value) {
+            $arrayCities[$value->getName()] = $value->getName();
+        }
+
+        return new Response(json_encode($arrayCities));
+    }
+
     public function registrationAction(Request $request)
     {
+        $EntityCountries = $this->getDoctrine()->getManager()->getRepository('AcmeMeetingBundle:country')->findAll();
+
+        $arrayCountries = array();
+        foreach ($EntityCountries as $value) {
+            $arrayCountries[$value->getName()] = $value->getName();
+        }
+
         $userMan = new UserMan();
         $userWomen = new UserWomen();
 
         $req = $request->request->all();
-
         $formMan = $this->createFormBuilder($userMan)
             ->add('gender', 'hidden')
             ->add('email', 'text')
             ->add('password', 'text')
             ->add('FirstName', 'text')
             ->add('LastName', 'text')
-            ->add('country', 'text')
-            ->add('city', 'text')
-            ->add('city', 'text')
+            ->add('Country', 'choice', array(
+                'choices' => $arrayCountries,
+                'required' => true,
+            ))
+            ->add('city', 'hidden')
             ->add('BirthDate', 'date')
-            ->add('MaritalStatus', 'text')
+            ->add('MaritalStatus', 'choice', array(
+                'choices' => array('married' => 'married', 'not married' => 'not married'),
+                'required' => true,
+            ))
             ->add('BodyType', 'text')
             ->add('file', 'file')
             ->getForm();
@@ -107,11 +137,16 @@ class MainController extends Controller
             ->add('password', 'text')
             ->add('FirstName', 'text')
             ->add('LastName', 'text')
-            ->add('country', 'text')
-            ->add('city', 'text')
-            ->add('city', 'text')
+            ->add('Country', 'choice', array(
+                'choices' => $arrayCountries,
+                'required' => true,
+            ))
+            ->add('city', 'hidden')
             ->add('BirthDate', 'date')
-            ->add('MaritalStatus', 'text')
+            ->add('MaritalStatus', 'choice', array(
+                'choices' => array('married' => 'married', 'not married' => 'not married'),
+                'required' => true,
+            ))
             ->add('breast', 'text')
             ->add('waist', 'text')
             ->add('Hips', 'text')
@@ -124,32 +159,26 @@ class MainController extends Controller
             ->getRepository('AcmeMeetingBundle:UserWomen');
 
         if ($request->getMethod() == 'POST') {
-
-            $request_value = $request->request->all();
-            $Man = $repositoryMan->findOneBy(array('email' => $request_value['form']['email']));
-            $Women = $repositoryWomen->findOneBy(array('email' => $request_value['form']['email']));
+            $Man = $repositoryMan->findOneBy(array('email' => $req['form']['email']));
+            $Women = $repositoryWomen->findOneBy(array('email' => $req['form']['email']));
 
             if (!$Man && !$Women) {
                 if ($req['form']['gender'] == "woman") {
                     $formWomen->handleRequest($request);
-                    if ($formWomen->isValid()) {
-                        $userWomen->upload();
-                        $em = $this->getDoctrine()->getEntityManager();
-                        $em->persist($formWomen->getData());
-                        $em->flush();
+                    $userWomen->upload();
+                    $em = $this->getDoctrine()->getEntityManager();
+                    $em->persist($formWomen->getData());
+                    $em->flush();
 
-                        return $this->render('AcmeMeetingBundle:Main:userSuccessCRUD.html.twig', array('action' => "registered",));
-                    }
+                    return $this->render('AcmeMeetingBundle:Main:userSuccessCRUD.html.twig', array('action' => "registered",));
                 } else if ($req['form']['gender'] == "man") {
                     $formMan->handleRequest($request);
-                    if ($formMan->isValid()) {
-                        $userMan->upload();
-                        $em = $this->getDoctrine()->getEntityManager();
-                        $em->persist($formMan->getData());
-                        $em->flush();
+                    $userMan->upload();
+                    $em = $this->getDoctrine()->getEntityManager();
+                    $em->persist($formMan->getData());
+                    $em->flush();
 
-                        return $this->render('AcmeMeetingBundle:Main:userSuccessCRUD.html.twig', array('action' => "registered",));
-                    }
+                    return $this->render('AcmeMeetingBundle:Main:userSuccessCRUD.html.twig', array('action' => "registered",));
                 }
             } else {
                 return new Response("Sorry User on that email exist");
@@ -240,33 +269,8 @@ class MainController extends Controller
         $UserMan = $repositoryMan->findOneBy(array('email' => $this->get('session')->get('email')));
         $UserWomen = $repositoryWomen->findOneBy(array('email' => $this->get('session')->get('email')));
 
-        $formMan = $this->createFormBuilder($UserMan)
-            ->add('gender', 'hidden')
-            ->add('email', 'text')
-            ->add('password', 'text')
-            ->add('FirstName', 'text')
-            ->add('LastName', 'text')
-            ->add('country', 'text')
-            ->add('city', 'text')
-            ->add('BirthDate', 'date')
-            ->add('MaritalStatus', 'text')
-            ->add('BodyType', 'text')
-            ->getForm();
-
-        $formWomen = $this->createFormBuilder($UserWomen)
-            ->add('gender', 'hidden')
-            ->add('email', 'text')
-            ->add('password', 'text')
-            ->add('FirstName', 'text')
-            ->add('LastName', 'text')
-            ->add('country', 'text')
-            ->add('city', 'text')
-            ->add('BirthDate', 'date')
-            ->add('MaritalStatus', 'text')
-            ->add('breast', 'text')
-            ->add('waist', 'text')
-            ->add('Hips', 'text')
-            ->getForm();
+        $formMan = $this->createForm(new UserManType(), $UserMan);
+        $formWomen = $this->createForm(new UserWomenType(), $UserWomen);
 
         $request_value = $request->request->all();
 
@@ -355,9 +359,10 @@ class MainController extends Controller
         }
     }
 
-    public function loginAdminAction(Request $request){
+    public function loginAdminAction(Request $request)
+    {
 
-        if(!$this->get('session')->has('admin')){
+        if (!$this->get('session')->has('admin')) {
             $request_value = $request->request->all();
 
             $repository = $this->getDoctrine()
@@ -370,30 +375,28 @@ class MainController extends Controller
                 ->add('password', 'text')
                 ->getForm();
 
-            if ($request->getMethod() == 'POST'){
+            if ($request->getMethod() == 'POST') {
                 $admin = $repository->findOneBy(array('admin' => $request_value['form']['admin']));
-                if(!$admin){
+                if (!$admin) {
                     return new Response("Sorry invalid login/password");
-                }
-                else if($request_value['form']['admin'] == $admin->getAdmin() && $request_value['form']['password'] == $admin->getPassword()){
+                } else if ($request_value['form']['admin'] == $admin->getAdmin() && $request_value['form']['password'] == $admin->getPassword()) {
                     $this->get('session')->set('admin', $request_value['form']['admin']);
                     return $this->redirect($this->generateUrl('userman'));
-                }
-                else{
+                } else {
                     return new Response("Sorry invalid login/password");
                 }
-            }
-            else{
+            } else {
                 return $this->render('AcmeMeetingBundle:Admin:adminPanelEnter.html.twig', array(
                     'form' => $form->createView(),
                 ));
             }
-        }else{
+        } else {
             return $this->redirect($this->generateUrl('userman'));
         }
     }
 
-    public function adminOutAction(){
+    public function adminOutAction()
+    {
         $this->get('session')->remove('admin');
         return $this->redirect($this->generateUrl('main'));
     }

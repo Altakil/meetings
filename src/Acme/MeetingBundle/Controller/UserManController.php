@@ -47,7 +47,7 @@ class UserManController extends Controller
             $max = 5;
             $page = ceil($count / $max);
             $current = $request->query->get('id');
-            for($i = 0; $i < $page; $i++){
+            for ($i = 0; $i < $page; $i++) {
                 $array_page[] = $i;
             }
             $repository = $em->getRepository('AcmeMeetingBundle:UserMan');
@@ -75,8 +75,8 @@ class UserManController extends Controller
 
                     $parameter = $countryChoice->getName();
                     $em = $this->getDoctrine()->getEntityManager();
-                    $query = $query = $em->createQuery('SELECT p FROM AcmeMeetingBundle:UserMan p WHERE p.country = :country ORDER BY p.country'
-                    )->setParameter('country', $parameter);
+                    $query = $query = $em->createQuery('SELECT p FROM AcmeMeetingBundle:UserMan p WHERE p.country = :country ORDER BY p.country')
+                        ->setParameter('country', $parameter);
                     $entities = $query->getResult();
 
 

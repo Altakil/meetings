@@ -44,3 +44,7 @@ loginAdmin:
 adminOut:
     pattern: /adminOut
     defaults: {_controller: AcmeMeetingBundle:Main:adminOut }
+
+ajax:
+    pattern: /ajax
+    defaults: {_controller: AcmeMeetingBundle:Main:ajax }

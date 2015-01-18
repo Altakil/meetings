@@ -45,6 +45,6 @@ class UserWomenType extends AbstractType
      */
     public function getName()
     {
-        return 'acme_meetingbundle_userwomen';
+        return 'form';
     }
 }
