@@ -80,3 +80,7 @@ input[name=gender] {
     width: 118px;
     margin: 7px 0;
 }
+
+#manTown{
+    display: inline-block;
+}

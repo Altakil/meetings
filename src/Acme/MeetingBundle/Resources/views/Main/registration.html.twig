@@ -19,13 +19,140 @@
     <input type="radio" name="gender" value="woman" id="womenGender">
 
     <form id="manForm" action="{{ path('registration') }}" method="post" {{ form_enctype(formMan) }}>
-        {{ form_widget(formMan) }}
+        <div id="form">
+            <div>
+                {{ form_errors(formMan.gender) }}
+                {{ form_widget(formMan.gender) }}
+            </div>
+            <div>
+                {{ form_label(formMan.email) }}
+                {{ form_errors(formMan.email) }}
+                {{ form_widget(formMan.email) }}
+            </div>
+            <div>
+                {{ form_label(formMan.password) }}
+                {{ form_errors(formMan.password) }}
+                {{ form_widget(formMan.password) }}
+            </div>
+            <div>
+                {{ form_label(formMan.FirstName) }}
+                {{ form_errors(formMan.FirstName) }}
+                {{ form_widget(formMan.FirstName) }}
+            </div>
+            <div>
+                {{ form_label(formMan.LastName) }}
+                {{ form_errors(formMan.LastName) }}
+                {{ form_widget(formMan.LastName) }}
+            </div>
+            <div>
+                {{ form_label(formMan.Country) }}
+                {{ form_errors(formMan.Country) }}
+                {{ form_widget(formMan.Country) }}
+            </div>
+            <div>
+                <label for="form_city_display">City</label>
+                <select id="form_city_display"></select >
+            </div>
+            <div>
+                {{ form_errors(formMan.city) }}
+                {{ form_widget(formMan.city) }}
+            </div>
+            <div>
+                {{ form_label(formMan.BirthDate) }}
+                {{ form_errors(formMan.BirthDate) }}
+                {{ form_widget(formMan.BirthDate) }}
+            </div>
+            <div>
+                {{ form_label(formMan.MaritalStatus) }}
+                {{ form_errors(formMan.MaritalStatus) }}
+                {{ form_widget(formMan.MaritalStatus) }}
+            </div>
+            <div>
+                {{ form_label(formMan.BodyType) }}
+                {{ form_errors(formMan.BodyType) }}
+                {{ form_widget(formMan.BodyType) }}
+            </div>
+            <div>
+                {{ form_label(formMan.file) }}
+                {{ form_errors(formMan.file) }}
+                {{ form_widget(formMan.file) }}
+            </div>
+        </div>
 
         <input class="reg" type="submit" />
     </form>
 
+
     <form id="womanForm" action="{{ path('registration') }}" method="post" {{ form_enctype(formWomen) }}>
-        {{ form_widget(formWomen) }}
+        <div id="form">
+            <div>
+                {{ form_errors(formWomen.gender) }}
+                {{ form_widget(formWomen.gender) }}
+            </div>
+            <div>
+                {{ form_label(formWomen.email) }}
+                {{ form_errors(formWomen.email) }}
+                {{ form_widget(formWomen.email) }}
+            </div>
+            <div>
+                {{ form_label(formWomen.password) }}
+                {{ form_errors(formWomen.password) }}
+                {{ form_widget(formWomen.password) }}
+            </div>
+            <div>
+                {{ form_label(formWomen.FirstName) }}
+                {{ form_errors(formWomen.FirstName) }}
+                {{ form_widget(formWomen.FirstName) }}
+            </div>
+            <div>
+                {{ form_label(formWomen.LastName) }}
+                {{ form_errors(formWomen.LastName) }}
+                {{ form_widget(formWomen.LastName) }}
+            </div>
+            <div>
+                {{ form_label(formWomen.Country) }}
+                {{ form_errors(formWomen.Country) }}
+                {{ form_widget(formWomen.Country) }}
+            </div>
+            <div>
+                <label for="form_city_display">City</label>
+                <select id="form_city_display"></select >
+            </div>
+            <div>
+                {{ form_errors(formWomen.city) }}
+                {{ form_widget(formWomen.city) }}
+            </div>
+            <div>
+                {{ form_label(formWomen.BirthDate) }}
+                {{ form_errors(formWomen.BirthDate) }}
+                {{ form_widget(formWomen.BirthDate) }}
+            </div>
+            <div>
+                {{ form_label(formWomen.MaritalStatus) }}
+                {{ form_errors(formWomen.MaritalStatus) }}
+                {{ form_widget(formWomen.MaritalStatus) }}
+            </div>
+            <div>
+                {{ form_label(formWomen.breast) }}
+                {{ form_errors(formWomen.breast) }}
+                {{ form_widget(formWomen.breast) }}
+            </div>
+            <div>
+                {{ form_label(formWomen.waist) }}
+                {{ form_errors(formWomen.waist) }}
+                {{ form_widget(formWomen.waist) }}
+            </div>
+            <div>
+                {{ form_label(formWomen.Hips) }}
+                {{ form_errors(formWomen.Hips) }}
+                {{ form_widget(formWomen.Hips) }}
+            </div>
+            <div>
+                {{ form_label(formWomen.file) }}
+                {{ form_errors(formWomen.file) }}
+                {{ form_widget(formWomen.file) }}
+            </div>
+        </div>
 
         <input class="reg" type="submit" />
     </form>

@@ -19,25 +19,30 @@ $(document).ready(function () {
 
     var objectCity;
 
+
     getRequest("#manForm");
     getRequest("#womanForm");
-    function getRequest(element){
+    function getRequest(element) {
 
         $('#form_Country', element).change(function (e) {
-
             var data = {request: $(this).val()};
             $.ajax({
                 type: "POST",
                 url: "ajax",
                 data: data,
                 success: function (data, dataType) {
-                    $('#form_city', element).find('option').remove();
+                    $('#form_city_display', element).find('option').remove();
                     objectCity = JSON.parse(data);
-                    for(var key in objectCity){
-                        $('#form_city', element).append('<option value="4">' + objectCity[key] + '</option>');
+                    for (var key in objectCity) {
+                        $('#form_city_display', element).append('<option value=' + objectCity[key] + '>' + objectCity[key] + '</option>');
+                        $('#form_city', element).val($('#form_city_display', element).val());
                     }
                 }
             });
+        });
+
+        $('#form_city_display', element).change(function () {
+            $('#form_city', element).val($(this).val());
         });
 
 
@@ -48,11 +53,13 @@ $(document).ready(function () {
             data: data,
             success: function (data, dataType) {
                 objectCity = JSON.parse(data);
-                for(var key in objectCity){
-                    $('#form_city', element).append('<option value="4">' + objectCity[key] + '</option>');
+                for (var key in objectCity) {
+                    $('#form_city_display', element).append('<option value=' + objectCity[key] + '>' + objectCity[key] + '</option>');
+                    $('#form_city', element).val($('#form_city_display', element).val());
                 }
             }
         });
     }
+
 
 });
