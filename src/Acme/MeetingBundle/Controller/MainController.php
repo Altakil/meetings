@@ -57,6 +57,7 @@ class MainController extends Controller
                     $this->get('session')->set('name', $UserMan->getFirstName());
                     $this->get('session')->set('email', $UserMan->getEmail());
                     $this->get('session')->set('password', $UserMan->getPassword());
+                    $this->get('session')->set('gender', $UserMan->getGender());
 
                     return $this->redirect($this->generateUrl('main'));
                 } else if ($UserWomen) {
@@ -64,6 +65,7 @@ class MainController extends Controller
                     $this->get('session')->set('name', $UserWomen->getFirstName());
                     $this->get('session')->set('email', $UserWomen->getEmail());
                     $this->get('session')->set('password', $UserWomen->getPassword());
+                    $this->get('session')->set('gender', $UserWomen->getGender());
 
                     return $this->redirect($this->generateUrl('main'));
                 }
@@ -80,6 +82,7 @@ class MainController extends Controller
         $this->get('session')->remove('name');
         $this->get('session')->remove('email');
         $this->get('session')->remove('password');
+        $this->get('session')->remove('gender');
         return $this->redirect($this->generateUrl('main'));
     }
 
@@ -164,17 +167,19 @@ class MainController extends Controller
 
             if (!$Man && !$Women) {
                 if ($req['form']['gender'] == "woman") {
+                    mail($req['form']['email'], "Subject", "Hello you registered on meeting.ru");
                     $formWomen->handleRequest($request);
                     $userWomen->upload();
-                    $em = $this->getDoctrine()->getEntityManager();
+                    $em = $this->getDoctrine()->getManager();
                     $em->persist($formWomen->getData());
                     $em->flush();
 
                     return $this->render('AcmeMeetingBundle:Main:userSuccessCRUD.html.twig', array('action' => "registered",));
                 } else if ($req['form']['gender'] == "man") {
+                    mail($req['form']['email'], "Subject", "Hello you registered on meeting.ru");
                     $formMan->handleRequest($request);
                     $userMan->upload();
-                    $em = $this->getDoctrine()->getEntityManager();
+                    $em = $this->getDoctrine()->getManager();
                     $em->persist($formMan->getData());
                     $em->flush();
 
@@ -195,8 +200,18 @@ class MainController extends Controller
 
     public function showAllUsersAction()
     {
+
+        if($this->get('session')->get('gender') == 'man'){
+            $users = $this->getDoctrine()
+                    ->getRepository('AcmeMeetingBundle:UserWomen')->findAll();
+        }else{
+            $users = $this->getDoctrine()
+                    ->getRepository('AcmeMeetingBundle:UserMan')->findAll();
+        }
+
         return $this->render('AcmeMeetingBundle:Main:userLogged.hml.twig', array(
             'name' => $this->get('session')->get('name'),
+            'users' => $users,
         ));
     }
 
@@ -278,7 +293,7 @@ class MainController extends Controller
             if ($UserMan) {
                 $formMan->handleRequest($request);
                 if ($formMan->isValid()) {
-                    $em = $this->getDoctrine()->getEntityManager();
+                    $em = $this->getDoctrine()->getManager();
                     $em->persist($formMan->getData());
                     $em->flush();
 
@@ -291,7 +306,7 @@ class MainController extends Controller
             } else if ($UserWomen) {
                 $formWomen->handleRequest($request);
                 if ($formWomen->isValid()) {
-                    $em = $this->getDoctrine()->getEntityManager();
+                    $em = $this->getDoctrine()->getManager();
                     $em->persist($formWomen->getData());
                     $em->flush();
 
@@ -337,7 +352,7 @@ class MainController extends Controller
             if ($formMan->isValid()) {
 
                 $UserMan->upload();
-                $em = $this->getDoctrine()->getEntityManager();
+                $em = $this->getDoctrine()->getManager();
                 $em->persist($formMan->getData());
                 $em->flush();
 
@@ -349,7 +364,7 @@ class MainController extends Controller
             if ($formWomen->isValid()) {
 
                 $UserWomen->upload();
-                $em = $this->getDoctrine()->getEntityManager();
+                $em = $this->getDoctrine()->getManager();
                 $em->persist($formWomen->getData());
                 $em->flush();
 

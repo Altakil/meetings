@@ -18,6 +18,8 @@
     <label for="womenGender" class="for-gender">woman</label>
     <input type="radio" name="gender" value="woman" id="womenGender">
 
+    <output id="error"></output>
+
     <form id="manForm" action="{{ path('registration') }}" method="post" {{ form_enctype(formMan) }}>
         <div id="form">
             <div>

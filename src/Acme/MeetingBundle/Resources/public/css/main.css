@@ -84,3 +84,35 @@ input[name=gender] {
 #manTown{
     display: inline-block;
 }
+
+
+.user-info{
+    overflow: hidden;
+    margin-top: 20px;
+    width: 500px;
+}
+
+.user-info ul{
+    font: 14px Verdana;
+    list-style: none;
+    float: left;
+    padding: 0;
+    margin: 0 0 0 10px;
+}
+
+.user-info li {
+    margin: 15px 0;
+}
+
+.user-info .image-user{
+    display: block;
+    float: left;
+}
+
+.user-info strong{
+    margin-right: 10px;
+}
+
+#error{
+    color: red;
+}
