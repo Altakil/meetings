@@ -10,4 +10,21 @@
 
     <a href="{{ path('login_out') }}">Exit</a><br>
     <a href="{{ path('showProfile') }}">Go to profile</a>
+
+    <div class="user-list">
+        <h3>User list for you</h3>
+        {% for user in users %}
+            <div class="user-info">
+                <img class="image-user" width="200" height="200" src="{{ asset('uploads/documents/') }}{{ user.image }}">
+                <ul>
+                    <li><strong>Name</strong>{{ user.FirstName }}</li>
+                    <li><strong>LastName</strong>{{ user.LastName }}</li>
+                    <li><strong>City</strong>{{ user.city }}</li>
+                    <li><strong>country</strong>{{ user.country }}</li>
+                    <li><strong>BirthDate</strong>{{ user.BirthDate|date('Y-m-d') }}</li>
+                    <li><strong>gender</strong>{{ user.gender }}</li>
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

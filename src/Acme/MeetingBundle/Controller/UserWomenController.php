@@ -71,7 +71,7 @@ class UserWomenController extends Controller
                     }
 
                     $parameter = $countryChoice->getName();
-                    $em = $this->getDoctrine()->getEntityManager();
+                    $em = $this->getDoctrine()->getManager();
                     $query = $query = $em->createQuery('SELECT p FROM AcmeMeetingBundle:UserWomen p WHERE p.country = :country ORDER BY p.country'
                     )->setParameter('country', $parameter);
 
@@ -93,7 +93,7 @@ class UserWomenController extends Controller
                 } else if (isset($request_value['form']['Cities']) && $request_value['form']['Cities'] != "") {
 
                     $parameter = substr($request_value['form']['Cities'], 0);
-                    $em = $this->getDoctrine()->getEntityManager();
+                    $em = $this->getDoctrine()->getManager();
                     $query = $query = $em->createQuery('SELECT p FROM AcmeMeetingBundle:UserWomen p WHERE p.city = :city ORDER BY p.city'
                     )->setParameter('city', $parameter);
 

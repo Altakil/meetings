@@ -62,4 +62,32 @@ $(document).ready(function () {
     }
 
 
+
+    function checkEmail(str, element) {
+        var bool;
+        var pattern = /((\w*)\d*)*@(\w)*\.{1}(\w){1,4}/;
+        if (pattern.test(str) == false) {
+            $(element).text("введите правильно email");
+            bool = false;
+        }
+        else {
+            bool = true;
+            $(element).text("");
+        }
+        return bool;
+    }
+
+    $("#manForm").submit(function(){
+        var str = $("#form_email", "#manForm").val();
+        var result = checkEmail(str, "#error");
+        return result;
+    });
+
+    $("#womanForm").submit(function(){
+        var str = $("#form_email", "#womanForm").val();
+        var result = checkEmail(str, "#error");
+        return result;
+    });
+
+
 });
